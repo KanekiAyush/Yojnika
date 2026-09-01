@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Yojnika</string>
+    <string name="app_tagline">Government Scheme Recommendation Assistant</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Recommendations</string>
+    <string name="nav_browse">Browse</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Personal Profile</string>
+    <string name="profile_subtitle">Fill in your details to get accurate ML-powered scheme recommendations</string>
+    <string name="full_name">Full Name</string>
+    <string name="full_name_hint">e.g. Ramesh Kumar</string>
+    <string name="age">Age</string>
+    <string name="age_hint">e.g. 28</string>
+    <string name="gender">Gender</string>
+    <string name="annual_income">Annual Income (₹ INR)</string>
+    <string name="annual_income_hint">e.g. 180000</string>
+    <string name="occupation">Occupation</string>
+    <string name="education_level">Education Level</string>
+    <string name="category">Category / Caste</string>
+    <string name="state">State / UT</string>
+    <string name="district">District</string>
+    <string name="district_hint">e.g. Pune, Jaipur, Patna</string>
+    <string name="marital_status">Marital Status</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="profile_saved_success">Profile saved successfully!</string>
+    <string name="profile_incomplete_warning">Please complete your profile to unlock personalized recommendations.</string>
+
+    <!-- Recommendations / Home -->
+    <string name="home_greeting">Namaste, %1$s!</string>
+    <string name="home_subtitle">Here are the top government schemes you are eligible for</string>
+    <string name="match_score">Match Score</string>
+    <string name="high_match">High Match</string>
+    <string name="moderate_match">Moderate Match</string>
+    <string name="low_match">Low Match</string>
+    <string name="view_details">View Details</string>
+    <string name="check_eligibility">Check Eligibility</string>
+    <string name="refresh_recommendations">Refresh</string>
+
+    <!-- Browse -->
+    <string name="browse_title">All Government Schemes</string>
+    <string name="search_schemes_hint">Search by scheme name or keywords...</string>
+    <string name="filter_state">State: All</string>
+    <string name="filter_type">Type: All</string>
+    <string name="filter_category">Category: All</string>
+    <string name="filter_all">All</string>
+    <string name="central_gov">Central Government</string>
+    <string name="state_gov">State Government</string>
+
+    <!-- Saved -->
+    <string name="saved_title">Saved Schemes</string>
+    <string name="no_saved_schemes">No saved schemes yet</string>
+    <string name="no_saved_desc">Bookmark schemes while browsing or viewing recommendations to access them anytime offline.</string>
+    <string name="scheme_saved">Scheme bookmarked!</string>
+    <string name="scheme_removed">Scheme removed from bookmarks</string>
+
+    <!-- Scheme Details -->
+    <string name="scheme_details_title">Scheme Details</string>
+    <string name="about_scheme">About the Scheme</string>
+    <string name="eligibility_criteria">Eligibility Criteria</string>
+    <string name="benefits">Key Benefits &amp; Financial Support</string>
+    <string name="application_process">How to Apply</string>
+    <string name="official_website">Official Portal</string>
+    <string name="open_portal">Visit Official Website</string>
+    <string name="share_scheme">Share Scheme</string>
+
+    <!-- Eligibility Checker -->
+    <string name="eligibility_checker_title">Eligibility Breakdown</string>
+    <string name="overall_status">Overall Status</string>
+    <string name="status_eligible">Eligible</string>
+    <string name="status_partially_eligible">Partially Eligible</string>
+    <string name="status_not_eligible">Not Eligible</string>
+    <string name="criteria_matched">Criteria Matched</string>
+    <string name="criteria_unmatched">Criteria Unmatched</string>
+    <string name="your_value">Your Profile: %1$s</string>
+    <string name="required_value">Scheme Requirement: %1$s</string>
+
+    <!-- Errors and Dialogs -->
+    <string name="error_name_required">Full name is required</string>
+    <string name="error_age_invalid">Please enter a valid age between 18 and 100</string>
+    <string name="error_income_invalid">Please enter a valid annual income</string>
+    <string name="error_district_required">District is required</string>
+
+    <!-- String Arrays -->
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="occupation_array">
+        <item>Student</item>
+        <item>Employee</item>
+        <item>Unemployed</item>
+        <item>Farmer</item>
+        <item>Retired</item>
+        <item>Business</item>
+    </string-array>
+
+    <string-array name="education_array">
+        <item>Below 10th</item>
+        <item>10th Pass</item>
+        <item>12th Pass</item>
+        <item>Graduate</item>
+        <item>Post Graduate</item>
+        <item>Diploma</item>
+        <item>PhD</item>
+    </string-array>
+
+    <string-array name="category_array">
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>EWS</item>
+    </string-array>
+
+    <string-array name="marital_status_array">
+        <item>Unmarried</item>
+        <item>Married</item>
+    </string-array>
+
+    <string-array name="scheme_type_filter_array">
+        <item>All Types</item>
+        <item>Central Government</item>
+        <item>State Government</item>
+    </string-array>
+
+    <string-array name="category_filter_array">
+        <item>All Categories</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>EWS</item>
+    </string-array>
+
+    <string-array name="indian_states_array">
+        <item>All India</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+        <item>Delhi</item>
+        <item>Jammu and Kashmir</item>
+        <item>Ladakh</item>
+        <item>Chandigarh</item>
+        <item>Puducherry</item>
+        <item>Andaman and Nicobar Islands</item>
+        <item>Dadra and Nagar Haveli and Daman and Diu</item>
+        <item>Lakshadweep</item>
+    </string-array>
+</resources>

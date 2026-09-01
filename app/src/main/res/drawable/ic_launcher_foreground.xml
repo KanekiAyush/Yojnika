@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Outer shield / crest -->
+    <path
+        android:fillColor="#FF8F00"
+        android:pathData="M54,26L34,35V53C34,66 42.5,78 54,82C65.5,78 74,66 74,53V35L54,26Z" />
+
+    <!-- Inner shield highlight -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30L38,37.5V52.5C38,63.5 44.8,73.8 54,77.5C63.2,73.8 70,63.5 70,52.5V37.5L54,30Z" />
+
+    <!-- Core symbol: Pillars / Ashoka Emblem / Building -->
+    <path
+        android:fillColor="#1A237E"
+        android:pathData="M54,36L44,42H64L54,36Z" />
+
+    <path
+        android:fillColor="#1A237E"
+        android:pathData="M45,44H47V56H45V44ZM50,44H52V56H50V44ZM56,44H58V56H56V44ZM61,44H63V56H61V44Z" />
+
+    <path
+        android:fillColor="#1A237E"
+        android:pathData="M43,57H65V60H43V57Z" />
+
+    <!-- Indian Green Accent Base -->
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M41,61H67V64H41V61Z" />
+
+    <!-- Sparkle / Star of Excellence -->
+    <path
+        android:fillColor="#FF8F00"
+        android:pathData="M54,67L55.5,70.5L59,71L56.5,73L57,76.5L54,74.5L51,76.5L51.5,73L49,71L52.5,70.5L54,67Z" />
+
+</vector>
