@@ -19,6 +19,11 @@ public class Scheme implements Serializable {
     private String applicationProcess;
     private String officialWebsite;
     private String schemeType;          // "Central Government" or "State Government"
+    private String slug;
+    private String documents;
+    private String schemeCategory;
+    private String tags;
+    private String eligibilityText;
     private String createdDate;
     private boolean isActive;
     private boolean isBookmarked;
@@ -212,5 +217,45 @@ public class Scheme implements Serializable {
 
     public void setMatchScore(float matchScore) {
         this.matchScore = matchScore;
+    }
+
+    public String getSlug() {
+        return slug != null ? slug : "";
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getDocuments() {
+        return documents != null ? documents : "";
+    }
+
+    public void setDocuments(String documents) {
+        this.documents = documents;
+    }
+
+    public String getSchemeCategory() {
+        return schemeCategory != null ? schemeCategory : "";
+    }
+
+    public void setSchemeCategory(String schemeCategory) {
+        this.schemeCategory = schemeCategory;
+    }
+
+    public String getTags() {
+        return tags != null ? tags : "";
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getEligibilityText() {
+        return eligibilityText != null ? eligibilityText : "";
+    }
+
+    public void setEligibilityText(String eligibilityText) {
+        this.eligibilityText = eligibilityText;
     }
 }

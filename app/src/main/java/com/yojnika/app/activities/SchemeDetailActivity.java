@@ -115,18 +115,32 @@ public class SchemeDetailActivity extends AppCompatActivity {
         tvSchemeTypeTag.setText(scheme.getSchemeType());
         tvSchemeDescription.setText(scheme.getSchemeDescription());
         tvBenefits.setText(scheme.getBenefits());
-        tvApplicationProcess.setText(scheme.getApplicationProcess());
+
+        StringBuilder appText = new StringBuilder();
+        if (scheme.getApplicationProcess() != null && !scheme.getApplicationProcess().isEmpty()) {
+            appText.append(scheme.getApplicationProcess());
+        }
+        if (scheme.getDocuments() != null && !scheme.getDocuments().isEmpty()) {
+            if (appText.length() > 0) appText.append("\n\nRequired Documents:\n");
+            else appText.append("Required Documents:\n");
+            appText.append(scheme.getDocuments());
+        }
+        tvApplicationProcess.setText(appText.toString());
 
         // Category Tag
-        String occ = scheme.getEligibleOccupations();
-        if (occ != null && occ.contains("Farmer")) {
-            tvCategoryTag.setText("Agriculture / Farmer");
-        } else if (occ != null && occ.contains("Student")) {
-            tvCategoryTag.setText("Education / Youth");
-        } else if (occ != null && occ.contains("Business")) {
-            tvCategoryTag.setText("Entrepreneurship");
+        if (scheme.getSchemeCategory() != null && !scheme.getSchemeCategory().isEmpty()) {
+            tvCategoryTag.setText(scheme.getSchemeCategory());
         } else {
-            tvCategoryTag.setText("Citizen Welfare");
+            String occ = scheme.getEligibleOccupations();
+            if (occ != null && occ.contains("Farmer")) {
+                tvCategoryTag.setText("Agriculture / Farmer");
+            } else if (occ != null && occ.contains("Student")) {
+                tvCategoryTag.setText("Education / Youth");
+            } else if (occ != null && occ.contains("Business")) {
+                tvCategoryTag.setText("Entrepreneurship");
+            } else {
+                tvCategoryTag.setText("Citizen Welfare");
+            }
         }
 
         // Criteria Age
@@ -158,7 +172,11 @@ public class SchemeDetailActivity extends AppCompatActivity {
 
         // Criteria State
         String cleanState = scheme.getEligibleStates().replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ");
-        tvCriteriaState.setText("• Eligible States: " + cleanState);
+        if (scheme.getEligibilityText() != null && !scheme.getEligibilityText().isEmpty()) {
+            tvCriteriaState.setText("• Eligible States: " + cleanState + "\n\nEligibility Details:\n" + scheme.getEligibilityText());
+        } else {
+            tvCriteriaState.setText("• Eligible States: " + cleanState);
+        }
 
         updateBookmarkIcon(scheme.isBookmarked());
     }

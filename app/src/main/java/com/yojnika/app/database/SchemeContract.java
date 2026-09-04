@@ -23,6 +23,11 @@ public final class SchemeContract {
         public static final String COLUMN_APPLICATION_PROCESS = "application_process";
         public static final String COLUMN_OFFICIAL_WEBSITE = "official_website";
         public static final String COLUMN_SCHEME_TYPE = "scheme_type";
+        public static final String COLUMN_SLUG = "slug";
+        public static final String COLUMN_DOCUMENTS = "documents";
+        public static final String COLUMN_SCHEME_CATEGORY = "scheme_category";
+        public static final String COLUMN_TAGS = "tags";
+        public static final String COLUMN_ELIGIBILITY_TEXT = "eligibility_text";
         public static final String COLUMN_CREATED_DATE = "created_date";
         public static final String COLUMN_IS_ACTIVE = "is_active";
         public static final String COLUMN_IS_BOOKMARKED = "is_bookmarked";
