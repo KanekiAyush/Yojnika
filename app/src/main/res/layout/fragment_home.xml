@@ -79,12 +79,7 @@
                 android:paddingEnd="12dp"
                 android:paddingBottom="6dp">
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:contentDescription="AI"
-                    android:src="@drawable/ic_sparkles"
-                    app:tint="@color/accent" />
+
 
                 <TextView
                     android:id="@+id/tvMlEngineStatus"
@@ -170,15 +165,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/btnRefreshRecs"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/refresh_recommendations"
-                android:padding="8dp"
-                android:src="@drawable/ic_sparkles"
-                app:tint="@color/primary" />
+
 
         </LinearLayout>
 
@@ -207,12 +194,7 @@
                 android:padding="32dp"
                 android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:contentDescription="Empty"
-                    android:src="@drawable/ic_sparkles"
-                    app:tint="@color/text_hint" />
+
 
                 <TextView
                     android:layout_width="wrap_content"

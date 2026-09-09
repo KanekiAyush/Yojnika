@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     private TextView tvHomeSubtitle;
     private TextView tvMlEngineStatus;
     private ImageView btnQuickProfile;
-    private ImageView btnRefreshRecs;
+
     private MaterialCardView cardProfileWarning;
     private MaterialButton btnSetupProfile;
     private RecyclerView rvRecommendations;
@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         tvHomeSubtitle = view.findViewById(R.id.tvHomeSubtitle);
         tvMlEngineStatus = view.findViewById(R.id.tvMlEngineStatus);
         btnQuickProfile = view.findViewById(R.id.btnQuickProfile);
-        btnRefreshRecs = view.findViewById(R.id.btnRefreshRecs);
+
         cardProfileWarning = view.findViewById(R.id.cardProfileWarning);
         btnSetupProfile = view.findViewById(R.id.btnSetupProfile);
         rvRecommendations = view.findViewById(R.id.rvRecommendations);
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         btnSetupProfile.setOnClickListener(openProfile);
         btnEmptyCreateProfile.setOnClickListener(openProfile);
 
-        btnRefreshRecs.setOnClickListener(v -> loadRecommendations());
+
     }
 
     private void loadRecommendations() {
