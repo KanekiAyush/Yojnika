@@ -59,6 +59,29 @@
     <string name="scheme_saved">Scheme bookmarked!</string>
     <string name="scheme_removed">Scheme removed from bookmarks</string>
 
+    <!-- Login -->
+    <string name="login_title">Welcome to Yojnika</string>
+    <string name="login_subtitle">Sign in to access personalized government schemes</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="login_button">Sign In</string>
+    <string name="logout_button">Logout from Session</string>
+    <string name="error_invalid_credentials">Invalid email or password</string>
+    <string name="error_email_empty">Email cannot be empty</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
+
+    <!-- Register -->
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Join Yojnika to find the best schemes for you</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register_button">Sign Up</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    <string name="dont_have_account">Don\'t have an account? Register</string>
+    <string name="registration_success">Registration successful. Please login.</string>
+    <string name="error_passwords_dont_match">Passwords do not match</string>
+    <string name="error_mobile_invalid">Please enter a valid mobile number</string>
+
     <!-- Scheme Details -->
     <string name="scheme_details_title">Scheme Details</string>
     <string name="about_scheme">About the Scheme</string>

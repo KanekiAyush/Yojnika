@@ -30,6 +30,18 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Yojnika"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Yojnika"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".activities.ProfileActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

@@ -358,6 +358,18 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Logout Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLogout"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/logout_button"
+                    android:textColor="@color/error"
+                    app:icon="@drawable/ic_close"
+                    app:iconTint="@color/error" />
+
             </LinearLayout>
 
         </LinearLayout>

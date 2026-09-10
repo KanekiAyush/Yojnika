@@ -60,6 +60,35 @@ public class SharedPrefsManager {
                 && !sharedPreferences.getString(Constants.KEY_FULL_NAME, "").isEmpty();
     }
 
+    public boolean isLoggedIn() {
+        return sharedPreferences.getBoolean(Constants.KEY_IS_LOGGED_IN, false);
+    }
+
+    public void setLoggedIn(boolean isLoggedIn) {
+        sharedPreferences.edit().putBoolean(Constants.KEY_IS_LOGGED_IN, isLoggedIn).apply();
+    }
+
+    public void clearSession() {
+        sharedPreferences.edit().putBoolean(Constants.KEY_IS_LOGGED_IN, false).apply();
+    }
+
+    public void registerUser(String email, String password, String name) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.KEY_REG_EMAIL, email);
+        editor.putString(Constants.KEY_REG_PASSWORD, password);
+        editor.putString(Constants.KEY_FULL_NAME, name);
+        editor.putBoolean(Constants.KEY_USER_EXISTS, true);
+        editor.apply();
+    }
+
+    public String getRegisteredEmail() {
+        return sharedPreferences.getString(Constants.KEY_REG_EMAIL, "");
+    }
+
+    public String getRegisteredPassword() {
+        return sharedPreferences.getString(Constants.KEY_REG_PASSWORD, "");
+    }
+
     public void clearProfile() {
         sharedPreferences.edit().clear().apply();
     }

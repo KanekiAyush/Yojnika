@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.yojnika.app.R;
+import com.yojnika.app.activities.LoginActivity;
 import com.yojnika.app.activities.ProfileActivity;
 import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
+import com.yojnika.app.utils.SharedPrefsManager;
 
 public class ProfileFragment extends Fragment {
 
@@ -29,6 +31,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvSummaryCategory;
     private TextView tvSummaryMarital;
     private MaterialButton btnEditProfileHeader;
+    private MaterialButton btnLogout;
 
     private SchemeRepository repository;
 
@@ -49,13 +52,24 @@ public class ProfileFragment extends Fragment {
         tvSummaryCategory = view.findViewById(R.id.tvSummaryCategory);
         tvSummaryMarital = view.findViewById(R.id.tvSummaryMarital);
         btnEditProfileHeader = view.findViewById(R.id.btnEditProfileHeader);
+        btnLogout = view.findViewById(R.id.btnLogout);
 
         btnEditProfileHeader.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ProfileActivity.class);
             startActivity(intent);
         });
 
+        btnLogout.setOnClickListener(v -> logout());
+
         return view;
+    }
+
+    private void logout() {
+        SharedPrefsManager.getInstance(requireContext()).clearSession();
+        Intent intent = new Intent(requireActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        requireActivity().finish();
     }
 
     @Override

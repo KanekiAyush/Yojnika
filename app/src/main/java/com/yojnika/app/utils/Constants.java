@@ -18,6 +18,9 @@ public class Constants {
     public static final String KEY_STATE = "state";
     public static final String KEY_DISTRICT = "district";
     public static final String KEY_MARITAL_STATUS = "marital_status";
+    public static final String KEY_IS_LOGGED_IN = "is_logged_in";
+    public static final String KEY_REG_EMAIL = "reg_email";
+    public static final String KEY_REG_PASSWORD = "reg_password";
 
     // Intent Extras
     public static final String EXTRA_SCHEME_ID = "extra_scheme_id";
