@@ -41,13 +41,13 @@
                         android:layout_width="88dp"
                         android:layout_height="88dp"
                         android:layout_gravity="center"
-                        android:background="@color/white"
+                        android:background="@color/surface"
                         android:contentDescription="Profile Picture"
                         android:padding="2dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_profile"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.Yojnika.Circle"
-                        app:strokeColor="@color/white"
+                        app:strokeColor="@color/divider"
                         app:strokeWidth="2dp"
                         app:tint="@color/primary" />
 
