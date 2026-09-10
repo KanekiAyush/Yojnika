@@ -12,13 +12,12 @@
         android:background="@drawable/bg_avatar_circle"
         android:backgroundTint="@color/white"
         android:padding="20dp"
-        android:src="@drawable/ic_sparkles"
+        android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toTopOf="@+id/tvAppName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:tint="@color/primary"
         android:contentDescription="@string/app_name" />
 
     <TextView
