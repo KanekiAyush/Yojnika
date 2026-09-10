@@ -1,11 +1,12 @@
 package com.yojnika.app.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.yojnika.app.R;
@@ -28,7 +30,9 @@ import com.yojnika.app.models.Scheme;
 import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.Constants;
+import com.yojnika.app.utils.SharedPrefsManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +41,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     private TextView tvHomeGreeting;
     private TextView tvHomeSubtitle;
     private TextView tvMlEngineStatus;
-    private ImageView btnQuickProfile;
+    private ShapeableImageView btnQuickProfile;
 
     private MaterialCardView cardProfileWarning;
     private MaterialButton btnSetupProfile;
@@ -79,6 +83,21 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     public void onResume() {
         super.onResume();
         loadRecommendations();
+        loadProfileImage();
+    }
+
+    private void loadProfileImage() {
+        String path = SharedPrefsManager.getInstance(requireContext()).getProfileImagePath();
+        if (path != null && new File(path).exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            btnQuickProfile.setImageBitmap(bitmap);
+            btnQuickProfile.setPadding(0, 0, 0, 0);
+            btnQuickProfile.setImageTintList(null);
+        } else {
+            btnQuickProfile.setImageResource(R.drawable.ic_profile);
+            btnQuickProfile.setPadding(10, 10, 10, 10);
+            btnQuickProfile.setImageTintList(requireContext().getColorStateList(R.color.primary));
+        }
     }
 
     private void setupRecyclerView() {

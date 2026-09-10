@@ -21,6 +21,7 @@ public class Constants {
     public static final String KEY_IS_LOGGED_IN = "is_logged_in";
     public static final String KEY_REG_EMAIL = "reg_email";
     public static final String KEY_REG_PASSWORD = "reg_password";
+    public static final String KEY_PROFILE_IMAGE_PATH = "profile_image_path";
 
     // Intent Extras
     public static final String EXTRA_SCHEME_ID = "extra_scheme_id";

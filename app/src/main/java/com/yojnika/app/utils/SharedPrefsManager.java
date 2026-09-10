@@ -89,6 +89,14 @@ public class SharedPrefsManager {
         return sharedPreferences.getString(Constants.KEY_REG_PASSWORD, "");
     }
 
+    public void saveProfileImagePath(String path) {
+        sharedPreferences.edit().putString(Constants.KEY_PROFILE_IMAGE_PATH, path).apply();
+    }
+
+    public String getProfileImagePath() {
+        return sharedPreferences.getString(Constants.KEY_PROFILE_IMAGE_PATH, null);
+    }
+
     public void clearProfile() {
         sharedPreferences.edit().clear().apply();
     }

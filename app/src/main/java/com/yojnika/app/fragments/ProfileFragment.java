@@ -1,17 +1,26 @@
 package com.yojnika.app.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.yojnika.app.R;
 import com.yojnika.app.activities.LoginActivity;
 import com.yojnika.app.activities.ProfileActivity;
@@ -19,8 +28,15 @@ import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.SharedPrefsManager;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class ProfileFragment extends Fragment {
 
+    private ShapeableImageView ivProfileAvatar;
+    private View flProfileImageContainer;
     private TextView tvProfileName;
     private TextView tvProfileLocation;
     private TextView tvSummaryAge;
@@ -34,6 +50,18 @@ public class ProfileFragment extends Fragment {
     private MaterialButton btnLogout;
 
     private SchemeRepository repository;
+    private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        pickMedia = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+            if (uri != null) {
+                saveAndSetProfileImage(uri);
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -42,6 +70,8 @@ public class ProfileFragment extends Fragment {
 
         repository = SchemeRepository.getInstance(requireContext());
 
+        ivProfileAvatar = view.findViewById(R.id.ivProfileAvatar);
+        flProfileImageContainer = view.findViewById(R.id.flProfileImageContainer);
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileLocation = view.findViewById(R.id.tvProfileLocation);
         tvSummaryAge = view.findViewById(R.id.tvSummaryAge);
@@ -54,6 +84,12 @@ public class ProfileFragment extends Fragment {
         btnEditProfileHeader = view.findViewById(R.id.btnEditProfileHeader);
         btnLogout = view.findViewById(R.id.btnLogout);
 
+        flProfileImageContainer.setOnClickListener(v -> {
+            pickMedia.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
+        });
+
         btnEditProfileHeader.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ProfileActivity.class);
             startActivity(intent);
@@ -62,6 +98,44 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(v -> logout());
 
         return view;
+    }
+
+    private void saveAndSetProfileImage(Uri uri) {
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
+            File file = new File(requireContext().getFilesDir(), "profile_image.jpg");
+            FileOutputStream outputStream = new FileOutputStream(file);
+            
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
+            }
+            
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+
+            SharedPrefsManager.getInstance(requireContext()).saveProfileImagePath(file.getAbsolutePath());
+            loadProfileImage(file.getAbsolutePath());
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(requireContext(), "Failed to save image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void loadProfileImage(String path) {
+        if (path != null && new File(path).exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            ivProfileAvatar.setImageBitmap(bitmap);
+            ivProfileAvatar.setPadding(0, 0, 0, 0);
+            ivProfileAvatar.setImageTintList(null);
+        } else {
+            ivProfileAvatar.setImageResource(R.drawable.ic_profile);
+            ivProfileAvatar.setPadding(16, 16, 16, 16);
+            ivProfileAvatar.setImageTintList(requireContext().getColorStateList(R.color.primary));
+        }
     }
 
     private void logout() {
@@ -76,6 +150,7 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadProfileData();
+        loadProfileImage(SharedPrefsManager.getInstance(requireContext()).getProfileImagePath());
     }
 
     private void loadProfileData() {
