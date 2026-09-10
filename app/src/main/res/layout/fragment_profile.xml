@@ -315,14 +315,22 @@
                 <!-- Logout Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogout"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/logout_button"
                     android:textColor="@color/error"
-                    app:icon="@drawable/ic_close"
-                    app:iconTint="@color/error" />
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:backgroundTint="@color/error_bg"
+                    app:cornerRadius="28dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="12dp"
+                    app:iconTint="@color/error"
+                    app:rippleColor="@color/error" />
 
             </LinearLayout>
 

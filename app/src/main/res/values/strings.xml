@@ -65,7 +65,7 @@
     <string name="email">Email Address</string>
     <string name="password">Password</string>
     <string name="login_button">Sign In</string>
-    <string name="logout_button">Logout from Session</string>
+    <string name="logout_button">Logout </string>
     <string name="error_invalid_credentials">Invalid email or password</string>
     <string name="error_email_empty">Email cannot be empty</string>
     <string name="error_password_empty">Password cannot be empty</string>
