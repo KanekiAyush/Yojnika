@@ -47,6 +47,11 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".activities.ProfilePhotoViewerActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity
             android:name=".activities.SchemeDetailActivity"
             android:exported="false" />
 

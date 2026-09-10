@@ -24,6 +24,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.yojnika.app.R;
 import com.yojnika.app.activities.LoginActivity;
 import com.yojnika.app.activities.ProfileActivity;
+import com.yojnika.app.activities.ProfilePhotoViewerActivity;
 import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.SharedPrefsManager;
@@ -36,7 +37,6 @@ import java.io.InputStream;
 public class ProfileFragment extends Fragment {
 
     private ShapeableImageView ivProfileAvatar;
-    private View flProfileImageContainer;
     private TextView tvProfileName;
     private TextView tvProfileLocation;
     private TextView tvSummaryAge;
@@ -48,6 +48,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvSummaryMarital;
     private MaterialButton btnEditProfileHeader;
     private MaterialButton btnLogout;
+    private View cvEditPhoto;
 
     private SchemeRepository repository;
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
@@ -71,7 +72,6 @@ public class ProfileFragment extends Fragment {
         repository = SchemeRepository.getInstance(requireContext());
 
         ivProfileAvatar = view.findViewById(R.id.ivProfileAvatar);
-        flProfileImageContainer = view.findViewById(R.id.flProfileImageContainer);
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileLocation = view.findViewById(R.id.tvProfileLocation);
         tvSummaryAge = view.findViewById(R.id.tvSummaryAge);
@@ -83,8 +83,14 @@ public class ProfileFragment extends Fragment {
         tvSummaryMarital = view.findViewById(R.id.tvSummaryMarital);
         btnEditProfileHeader = view.findViewById(R.id.btnEditProfileHeader);
         btnLogout = view.findViewById(R.id.btnLogout);
+        cvEditPhoto = view.findViewById(R.id.cvEditPhoto);
 
-        flProfileImageContainer.setOnClickListener(v -> {
+        ivProfileAvatar.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), ProfilePhotoViewerActivity.class);
+            startActivity(intent);
+        });
+
+        cvEditPhoto.setOnClickListener(v -> {
             pickMedia.launch(new PickVisualMediaRequest.Builder()
                     .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
                     .build());
