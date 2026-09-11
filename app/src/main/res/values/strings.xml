@@ -141,6 +141,13 @@
         <item>SC</item>
         <item>ST</item>
         <item>EWS</item>
+        <item>VJ-A</item>
+        <item>NT-B</item>
+        <item>NT-C</item>
+        <item>NT-D</item>
+        <item>VJNT</item>
+        <item>SEBC</item>
+        <item>SBC</item>
     </string-array>
 
     <string-array name="marital_status_array">

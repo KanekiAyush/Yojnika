@@ -219,13 +219,15 @@
                         android:text="@string/category"
                         android:textColor="@color/text_secondary"
                         android:textSize="12sp" />
-
                     <Spinner
                         android:id="@+id/spinnerCategory"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="50dp"
                         android:background="@drawable/bg_search_bar"
-                        android:padding="8dp" />
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:spinnerMode="dropdown" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
