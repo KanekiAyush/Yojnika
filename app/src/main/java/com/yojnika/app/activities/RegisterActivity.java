@@ -14,8 +14,8 @@ import com.yojnika.app.utils.SharedPrefsManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputLayout tilName, tilEmail, tilPassword, tilConfirmPassword;
-    private TextInputEditText etName, etEmail, etPassword, etConfirmPassword;
+    private TextInputLayout tilName, tilEmail, tilPhone, tilPassword, tilConfirmPassword;
+    private TextInputEditText etName, etEmail, etPhone, etPassword, etConfirmPassword;
     private MaterialButton btnRegister;
     private TextView tvBackToLogin;
 
@@ -26,11 +26,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         tilName = findViewById(R.id.tilRegName);
         tilEmail = findViewById(R.id.tilRegEmail);
+        tilPhone = findViewById(R.id.tilRegPhone);
         tilPassword = findViewById(R.id.tilRegPassword);
         tilConfirmPassword = findViewById(R.id.tilRegConfirmPassword);
 
         etName = findViewById(R.id.etRegName);
         etEmail = findViewById(R.id.etRegEmail);
+        etPhone = findViewById(R.id.etRegPhone);
         etPassword = findViewById(R.id.etRegPassword);
         etConfirmPassword = findViewById(R.id.etRegConfirmPassword);
 
@@ -44,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void attemptRegister() {
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
@@ -61,6 +64,16 @@ public class RegisterActivity extends AppCompatActivity {
             isValid = false;
         } else {
             tilEmail.setError(null);
+        }
+
+        if (phone.isEmpty()) {
+            tilPhone.setError(getString(R.string.phone_number) + " is required");
+            isValid = false;
+        } else if (phone.length() != 10) {
+            tilPhone.setError(getString(R.string.error_mobile_invalid));
+            isValid = false;
+        } else {
+            tilPhone.setError(null);
         }
 
         if (password.isEmpty()) {
@@ -81,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            SharedPrefsManager.getInstance(this).registerUser(email, password, name);
+            SharedPrefsManager.getInstance(this).registerUser(email, phone, password, name);
             Toast.makeText(this, R.string.registration_success, Toast.LENGTH_LONG).show();
             finish();
         }

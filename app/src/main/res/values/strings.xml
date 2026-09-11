@@ -63,6 +63,8 @@
     <string name="login_title">Welcome to Yojnika</string>
     <string name="login_subtitle">Sign in to access personalized government schemes</string>
     <string name="email">Email Address</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email_or_phone">Email or Phone Number</string>
     <string name="password">Password</string>
     <string name="login_button">Sign In</string>
     <string name="logout_button">Logout </string>

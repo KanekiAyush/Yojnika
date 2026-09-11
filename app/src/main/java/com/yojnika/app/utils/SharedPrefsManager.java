@@ -72,9 +72,10 @@ public class SharedPrefsManager {
         sharedPreferences.edit().putBoolean(Constants.KEY_IS_LOGGED_IN, false).apply();
     }
 
-    public void registerUser(String email, String password, String name) {
+    public void registerUser(String email, String phone, String password, String name) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(Constants.KEY_REG_EMAIL, email);
+        editor.putString(Constants.KEY_REG_PHONE, phone);
         editor.putString(Constants.KEY_REG_PASSWORD, password);
         editor.putString(Constants.KEY_FULL_NAME, name);
         editor.putBoolean(Constants.KEY_USER_EXISTS, true);
@@ -83,6 +84,10 @@ public class SharedPrefsManager {
 
     public String getRegisteredEmail() {
         return sharedPreferences.getString(Constants.KEY_REG_EMAIL, "");
+    }
+
+    public String getRegisteredPhone() {
+        return sharedPreferences.getString(Constants.KEY_REG_PHONE, "");
     }
 
     public String getRegisteredPassword() {

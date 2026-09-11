@@ -40,11 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        String email = etEmail.getText().toString().trim();
+        String input = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        if (email.isEmpty()) {
-            tilEmail.setError(getString(R.string.error_email_empty));
+        if (input.isEmpty()) {
+            tilEmail.setError(getString(R.string.email_or_phone) + " is required");
             return;
         } else {
             tilEmail.setError(null);
@@ -59,12 +59,16 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPrefsManager prefs = SharedPrefsManager.getInstance(this);
         String regEmail = prefs.getRegisteredEmail();
+        String regPhone = prefs.getRegisteredPhone();
         String regPassword = prefs.getRegisteredPassword();
 
-        // Check against Registered Credentials or Demo Credentials
-        if ((!regEmail.isEmpty() && email.equals(regEmail) && password.equals(regPassword)) 
-            || (email.equals("user@yojnika.com") && password.equals("password123"))) {
-            
+        // Check against Registered Credentials (Email OR Phone) or Demo Credentials
+        boolean isRegisteredMatch = (!regEmail.isEmpty() && input.equals(regEmail) && password.equals(regPassword)) 
+                                || (!regPhone.isEmpty() && input.equals(regPhone) && password.equals(regPassword));
+        
+        boolean isDemoMatch = (input.equals("user@yojnika.com") && password.equals("password123"));
+
+        if (isRegisteredMatch || isDemoMatch) {
             prefs.setLoggedIn(true);
             
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
