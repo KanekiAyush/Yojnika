@@ -21,6 +21,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPrefsManager.getInstance(this).applyTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 

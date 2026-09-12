@@ -20,7 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
+import androidx.appcompat.app.AppCompatDelegate;
 import com.yojnika.app.R;
 import com.yojnika.app.activities.LoginActivity;
 import com.yojnika.app.activities.ProfileActivity;
@@ -46,9 +48,11 @@ public class ProfileFragment extends Fragment {
     private TextView tvSummaryEducation;
     private TextView tvSummaryCategory;
     private TextView tvSummaryMarital;
+    private TextView tvCurrentTheme;
     private MaterialButton btnEditProfileHeader;
     private MaterialButton btnLogout;
     private View cvEditPhoto;
+    private View cvThemeSelection;
 
     private SchemeRepository repository;
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
@@ -81,9 +85,13 @@ public class ProfileFragment extends Fragment {
         tvSummaryEducation = view.findViewById(R.id.tvSummaryEducation);
         tvSummaryCategory = view.findViewById(R.id.tvSummaryCategory);
         tvSummaryMarital = view.findViewById(R.id.tvSummaryMarital);
+        tvCurrentTheme = view.findViewById(R.id.tvCurrentTheme);
         btnEditProfileHeader = view.findViewById(R.id.btnEditProfileHeader);
         btnLogout = view.findViewById(R.id.btnLogout);
         cvEditPhoto = view.findViewById(R.id.cvEditPhoto);
+        cvThemeSelection = view.findViewById(R.id.cvThemeSelection);
+
+        updateThemeSummary();
 
         ivProfileAvatar.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ProfilePhotoViewerActivity.class);
@@ -96,6 +104,8 @@ public class ProfileFragment extends Fragment {
                     .build());
         });
 
+        cvThemeSelection.setOnClickListener(v -> showThemeSelectionDialog());
+
         btnEditProfileHeader.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ProfileActivity.class);
             startActivity(intent);
@@ -104,6 +114,47 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(v -> logout());
 
         return view;
+    }
+
+    private void showThemeSelectionDialog() {
+        String[] options = {
+                getString(R.string.theme_light),
+                getString(R.string.theme_dark),
+                getString(R.string.theme_system)
+        };
+
+        int currentMode = SharedPrefsManager.getInstance(requireContext()).getThemeMode();
+        int checkedItem;
+        if (currentMode == AppCompatDelegate.MODE_NIGHT_NO) checkedItem = 0;
+        else if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) checkedItem = 1;
+        else checkedItem = 2;
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.theme_title)
+                .setSingleChoiceItems(options, checkedItem, (dialog, which) -> {
+                    int mode;
+                    switch (which) {
+                        case 0: mode = AppCompatDelegate.MODE_NIGHT_NO; break;
+                        case 1: mode = AppCompatDelegate.MODE_NIGHT_YES; break;
+                        default: mode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM; break;
+                    }
+                    SharedPrefsManager.getInstance(requireContext()).setThemeMode(mode);
+                    SharedPrefsManager.getInstance(requireContext()).applyTheme();
+                    updateThemeSummary();
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    private void updateThemeSummary() {
+        int mode = SharedPrefsManager.getInstance(requireContext()).getThemeMode();
+        if (mode == AppCompatDelegate.MODE_NIGHT_NO) {
+            tvCurrentTheme.setText(R.string.theme_light);
+        } else if (mode == AppCompatDelegate.MODE_NIGHT_YES) {
+            tvCurrentTheme.setText(R.string.theme_dark);
+        } else {
+            tvCurrentTheme.setText(R.string.theme_system);
+        }
     }
 
     private void saveAndSetProfileImage(Uri uri) {

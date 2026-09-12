@@ -111,6 +111,13 @@
     <string name="error_income_invalid">Please enter a valid annual income</string>
     <string name="error_district_required">District is required</string>
 
+    <!-- Theme -->
+    <string name="theme_title">Choose Theme</string>
+    <string name="theme_light">Light Mode</string>
+    <string name="theme_dark">Dark Mode</string>
+    <string name="theme_system">System Default</string>
+    <string name="apply">Apply</string>
+
     <!-- String Arrays -->
     <string-array name="gender_array">
         <item>Male</item>

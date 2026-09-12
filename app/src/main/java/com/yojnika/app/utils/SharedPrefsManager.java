@@ -2,6 +2,7 @@ package com.yojnika.app.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.yojnika.app.models.UserProfile;
 
@@ -119,6 +120,18 @@ public class SharedPrefsManager {
 
     public String getProfileImagePath() {
         return sharedPreferences.getString(Constants.KEY_PROFILE_IMAGE_PATH, null);
+    }
+
+    public void setThemeMode(int mode) {
+        sharedPreferences.edit().putInt(Constants.KEY_THEME_MODE, mode).apply();
+    }
+
+    public int getThemeMode() {
+        return sharedPreferences.getInt(Constants.KEY_THEME_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+    }
+
+    public void applyTheme() {
+        AppCompatDelegate.setDefaultNightMode(getThemeMode());
     }
 
     public void clearProfile() {
