@@ -11,6 +11,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import android.widget.TextView;
 import com.yojnika.app.R;
+import com.yojnika.app.models.UserProfile;
+import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
 public class LoginActivity extends AppCompatActivity {
@@ -71,7 +73,16 @@ public class LoginActivity extends AppCompatActivity {
         if (isRegisteredMatch || isDemoMatch) {
             prefs.setLoggedIn(true);
             
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent;
+            if (!prefs.isProfileComplete()) {
+                // Profile not complete, go to Setup
+                intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);
+            } else {
+                // Profile complete, go to Home
+                intent = new Intent(LoginActivity.this, MainActivity.class);
+            }
+            
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

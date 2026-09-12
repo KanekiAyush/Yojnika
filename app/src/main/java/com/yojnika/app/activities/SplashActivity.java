@@ -9,7 +9,9 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yojnika.app.R;
+import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
+import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
 @SuppressLint("CustomSplashScreen")
@@ -29,8 +31,16 @@ public class SplashActivity extends AppCompatActivity {
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent intent;
-            if (SharedPrefsManager.getInstance(this).isLoggedIn()) {
-                intent = new Intent(SplashActivity.this, MainActivity.class);
+            SharedPrefsManager prefs = SharedPrefsManager.getInstance(this);
+            
+            if (prefs.isLoggedIn()) {
+                if (!prefs.isProfileComplete()) {
+                    // Logged in but profile incomplete
+                    intent = new Intent(SplashActivity.this, ProfileActivity.class);
+                    intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);
+                } else {
+                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                }
             } else {
                 intent = new Intent(SplashActivity.this, LoginActivity.class);
             }

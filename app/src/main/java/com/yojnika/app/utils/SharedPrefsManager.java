@@ -24,6 +24,7 @@ public class SharedPrefsManager {
         if (profile == null) return;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(Constants.KEY_USER_EXISTS, true);
+        editor.putBoolean(Constants.KEY_PROFILE_COMPLETED, true);
         editor.putString(Constants.KEY_FULL_NAME, profile.getFullName());
         editor.putInt(Constants.KEY_AGE, profile.getAge());
         editor.putString(Constants.KEY_GENDER, profile.getGender());
@@ -74,12 +75,30 @@ public class SharedPrefsManager {
 
     public void registerUser(String email, String phone, String password, String name) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        
+        // Clear old profile data to ensure clean slate for new user
+        editor.remove(Constants.KEY_FULL_NAME);
+        editor.remove(Constants.KEY_AGE);
+        editor.remove(Constants.KEY_GENDER);
+        editor.remove(Constants.KEY_ANNUAL_INCOME);
+        editor.remove(Constants.KEY_OCCUPATION);
+        editor.remove(Constants.KEY_EDUCATION);
+        editor.remove(Constants.KEY_CATEGORY);
+        editor.remove(Constants.KEY_STATE);
+        editor.remove(Constants.KEY_DISTRICT);
+        editor.remove(Constants.KEY_MARITAL_STATUS);
+        editor.remove(Constants.KEY_PROFILE_IMAGE_PATH);
+        
+        editor.putBoolean(Constants.KEY_PROFILE_COMPLETED, false);
         editor.putString(Constants.KEY_REG_EMAIL, email);
         editor.putString(Constants.KEY_REG_PHONE, phone);
         editor.putString(Constants.KEY_REG_PASSWORD, password);
-        editor.putString(Constants.KEY_FULL_NAME, name);
         editor.putBoolean(Constants.KEY_USER_EXISTS, true);
         editor.apply();
+    }
+
+    public boolean isProfileComplete() {
+        return sharedPreferences.getBoolean(Constants.KEY_PROFILE_COMPLETED, false);
     }
 
     public String getRegisteredEmail() {

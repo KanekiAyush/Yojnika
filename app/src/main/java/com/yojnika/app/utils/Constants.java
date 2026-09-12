@@ -23,10 +23,12 @@ public class Constants {
     public static final String KEY_REG_PHONE = "reg_phone";
     public static final String KEY_REG_PASSWORD = "reg_password";
     public static final String KEY_PROFILE_IMAGE_PATH = "profile_image_path";
+    public static final String KEY_PROFILE_COMPLETED = "profile_completed";
 
     // Intent Extras
     public static final String EXTRA_SCHEME_ID = "extra_scheme_id";
     public static final String EXTRA_FROM_SPLASH = "extra_from_splash";
+    public static final String EXTRA_IS_SETUP_MODE = "extra_is_setup_mode";
 
     // ML Model Configuration
     public static final String MODEL_FILE_NAME = "scheme_model.onnx";

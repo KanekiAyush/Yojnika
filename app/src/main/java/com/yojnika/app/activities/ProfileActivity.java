@@ -1,5 +1,6 @@
 package com.yojnika.app.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.yojnika.app.R;
 import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
+import com.yojnika.app.utils.Constants;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -24,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     private MaterialButton btnSaveProfile;
 
     private SchemeRepository repository;
+    private boolean isSetupMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +34,30 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         repository = SchemeRepository.getInstance(this);
+        isSetupMode = getIntent().getBooleanExtra(Constants.EXTRA_IS_SETUP_MODE, false);
 
         initViews();
         setupSpinners();
         loadExistingProfile();
 
-        toolbar.setNavigationOnClickListener(v -> finish());
+        if (isSetupMode) {
+            toolbar.setNavigationIcon(null);
+            toolbar.setTitle("Setup Your Profile");
+        } else {
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
+        
         btnSaveProfile.setOnClickListener(v -> saveProfile());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isSetupMode) {
+            // Disable back button during mandatory setup
+            Toast.makeText(this, "Please complete your profile to continue", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void initViews() {
@@ -80,6 +100,8 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadExistingProfile() {
+        if (isSetupMode) return; // Don't pre-fill if it's the mandatory setup
+
         UserProfile profile = repository.getUserProfile();
         if (profile != null) {
             etFullName.setText(profile.getFullName());
@@ -177,6 +199,12 @@ public class ProfileActivity extends AppCompatActivity {
         repository.saveUserProfile(profile);
 
         Toast.makeText(this, R.string.profile_saved_success, Toast.LENGTH_SHORT).show();
+        
+        if (isSetupMode) {
+            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
         finish();
     }
 }
