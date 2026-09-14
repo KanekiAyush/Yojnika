@@ -38,12 +38,14 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
 
     private synchronized void checkAndCopyDatabase() {
         File dbFile = mContext.getDatabasePath(Constants.DATABASE_NAME);
-        if (!dbFile.exists()) {
+        // Force re-copy if file exists but is too small (meaning it's likely an empty table created by onCreate)
+        if (!dbFile.exists() || dbFile.length() < 1000000) { 
             try {
                 if (dbFile.getParentFile() != null) {
                     dbFile.getParentFile().mkdirs();
                 }
-                InputStream is = mContext.getAssets().open(Constants.DATABASE_NAME);
+                // Try to copy the large data-filled database from assets
+                InputStream is = mContext.getAssets().open("yojnika_schemes.db");
                 OutputStream os = new FileOutputStream(dbFile);
                 byte[] buffer = new byte[8192];
                 int length;
@@ -205,8 +207,12 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
                 selection.append(" AND (")
                         .append(SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY).append(" LIKE ? OR ")
                         .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_TAGS).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS).append(" LIKE ? OR ")
                         .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE '%All%')");
                 String catPattern = "%" + categoryFilter + "%";
+                selectionArgs.add(catPattern);
+                selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
             }

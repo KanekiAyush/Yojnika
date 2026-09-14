@@ -22,6 +22,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.yojnika.app.R;
+import com.yojnika.app.activities.CategorySchemesActivity;
 import com.yojnika.app.activities.ProfileActivity;
 import com.yojnika.app.activities.SchemeDetailActivity;
 import com.yojnika.app.adapters.SchemeAdapter;
@@ -50,6 +51,8 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     private MaterialButton btnEmptyCreateProfile;
     private ProgressBar pbHomeLoading;
 
+    private MaterialCardView cardCategoryEducation, cardCategoryAgriculture, cardCategoryHealth, cardCategoryBusiness, cardCategorySocial;
+
     private SchemeRepository repository;
     private SchemeAdapter adapter;
     private final List<Scheme> recommendedSchemes = new ArrayList<>();
@@ -72,6 +75,12 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         llHomeEmptyState = view.findViewById(R.id.llHomeEmptyState);
         btnEmptyCreateProfile = view.findViewById(R.id.btnEmptyCreateProfile);
         pbHomeLoading = view.findViewById(R.id.pbHomeLoading);
+
+        cardCategoryEducation = view.findViewById(R.id.cardCategoryEducation);
+        cardCategoryAgriculture = view.findViewById(R.id.cardCategoryAgriculture);
+        cardCategoryHealth = view.findViewById(R.id.cardCategoryHealth);
+        cardCategoryBusiness = view.findViewById(R.id.cardCategoryBusiness);
+        cardCategorySocial = view.findViewById(R.id.cardCategorySocial);
 
         setupRecyclerView();
         setupClickListeners();
@@ -116,7 +125,18 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         btnSetupProfile.setOnClickListener(openProfile);
         btnEmptyCreateProfile.setOnClickListener(openProfile);
 
+        cardCategoryEducation.setOnClickListener(v -> openCategory("Education", "Education"));
+        cardCategoryAgriculture.setOnClickListener(v -> openCategory("Agriculture", "Agri"));
+        cardCategoryHealth.setOnClickListener(v -> openCategory("Health", "Health"));
+        cardCategoryBusiness.setOnClickListener(v -> openCategory("Business", "Entrepre"));
+        cardCategorySocial.setOnClickListener(v -> openCategory("Social Welfare", "Welfare"));
+    }
 
+    private void openCategory(String name, String dbCategory) {
+        Intent intent = new Intent(requireActivity(), CategorySchemesActivity.class);
+        intent.putExtra("CATEGORY_NAME", name);
+        intent.putExtra("DB_CATEGORY", dbCategory);
+        startActivity(intent);
     }
 
     private void loadRecommendations() {
@@ -142,7 +162,8 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         rvRecommendations.setVisibility(View.VISIBLE);
         pbHomeLoading.setVisibility(View.VISIBLE);
 
-        String firstName = profile.getFullName().split(" ")[0];
+        String fullName = profile.getFullName();
+        String firstName = fullName.contains(" ") ? fullName.split(" ")[0] : fullName;
         tvHomeGreeting.setText(getString(R.string.home_greeting, firstName));
         tvHomeSubtitle.setText(getString(R.string.home_subtitle));
 

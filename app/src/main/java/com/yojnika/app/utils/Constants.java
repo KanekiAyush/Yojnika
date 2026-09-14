@@ -2,7 +2,7 @@ package com.yojnika.app.utils;
 
 public class Constants {
     // Database Constants
-    public static final String DATABASE_NAME = "yojnika_schemes.db";
+    public static final String DATABASE_NAME = "yojnika_schemes_v2.db";
     public static final int DATABASE_VERSION = 1;
 
     // Shared Preferences Keys
