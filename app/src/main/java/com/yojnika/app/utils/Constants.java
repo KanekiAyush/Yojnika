@@ -36,8 +36,13 @@ public class Constants {
     public static final int FEATURE_VECTOR_SIZE = 64;
 
     // Standard Categories
-    public static final String[] CATEGORIES = {"General", "OBC", "SC", "ST", "EWS"};
-    public static final String[] OCCUPATIONS = {"Student", "Employee", "Unemployed", "Farmer", "Retired", "Business"};
+    public static final String[] CATEGORIES = {"General", "OBC", "SC", "ST", "EWS", "VJ-A", "NT-B", "NT-C", "NT-D", "VJNT", "SEBC", "SBC", "Other"};
+    public static final String[] OCCUPATIONS = {
+            "Student - Engineering", "Student - Medical", "Student - Diploma",
+            "Student - Arts", "Student - Commerce", "Student - Science",
+            "Other Student", "Employed", "Self-Employed / Business",
+            "Farmer", "Homemaker", "Skilled Worker", "Unemployed", "Other"
+    };
     public static final String[] GENDERS = {"Male", "Female", "Other"};
     public static final String[] MARITAL_STATUSES = {"Unmarried", "Married"};
     public static final String[] EDUCATION_LEVELS = {"Below 10th", "10th Pass", "12th Pass", "Graduate", "Post Graduate", "Diploma", "PhD"};

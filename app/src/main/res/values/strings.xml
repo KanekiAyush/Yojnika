@@ -110,6 +110,10 @@
     <string name="error_age_invalid">Please enter a valid age between 18 and 100</string>
     <string name="error_income_invalid">Please enter a valid annual income</string>
     <string name="error_district_required">District is required</string>
+    <string name="enter_custom_district">Enter District Name</string>
+    <string name="enter_custom_income">Enter Annual Income (₹)</string>
+    <string name="enter_custom_category">Enter Category / Caste</string>
+    <string name="error_name_invalid">Please enter a valid name (letters only)</string>
 
     <!-- Theme -->
     <string name="theme_title">Choose Theme</string>
@@ -126,12 +130,32 @@
     </string-array>
 
     <string-array name="occupation_array">
-        <item>Student</item>
-        <item>Employee</item>
-        <item>Unemployed</item>
+        <item>Student - Engineering</item>
+        <item>Student - Medical</item>
+        <item>Student - Diploma</item>
+        <item>Student - Arts</item>
+        <item>Student - Commerce</item>
+        <item>Student - Science</item>
+        <item>Other Student</item>
+        <item>Employed</item>
+        <item>Self-Employed / Business</item>
         <item>Farmer</item>
-        <item>Retired</item>
-        <item>Business</item>
+        <item>Homemaker</item>
+        <item>Skilled Worker</item>
+        <item>Unemployed</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="income_range_array">
+        <item>₹0 – ₹15,000</item>
+        <item>₹15,000 – ₹30,000</item>
+        <item>₹30,000 – ₹50,000</item>
+        <item>₹50,000 – ₹1 Lakh</item>
+        <item>₹1 Lakh – ₹2 Lakh</item>
+        <item>₹2 Lakh – ₹3 Lakh</item>
+        <item>₹3 Lakh – ₹5 Lakh</item>
+        <item>₹5 Lakh – ₹8 Lakh</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="education_array">
@@ -157,6 +181,7 @@
         <item>VJNT</item>
         <item>SEBC</item>
         <item>SBC</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="marital_status_array">

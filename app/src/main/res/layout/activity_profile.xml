@@ -32,6 +32,17 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:progress="0"
+                app:indicatorColor="@color/primary"
+                app:trackColor="@color/card_stroke"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="8dp" />
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -162,17 +173,34 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <!-- Annual Income -->
+                    <!-- Annual Income Dropdown -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/annual_income"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerIncomeRange"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_search_bar"
+                        android:padding="8dp" />
+
+                    <!-- Custom Annual Income Input -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilIncome"
+                        android:id="@+id/tilCustomIncome"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="@string/annual_income">
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/enter_custom_income"
+                        android:visibility="gone">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etIncome"
+                            android:id="@+id/etCustomIncome"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="number" />
@@ -226,6 +254,24 @@
                         android:background="@drawable/bg_search_bar"
                         android:padding="8dp" />
 
+                    <!-- Custom Category Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCustomCategory"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/enter_custom_category"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCustomCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -269,17 +315,52 @@
                         android:background="@drawable/bg_search_bar"
                         android:padding="8dp" />
 
-                    <!-- District Input -->
+                    <!-- Custom State Input -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilDistrict"
+                        android:id="@+id/tilCustomState"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="@string/district">
+                        android:layout_marginTop="8dp"
+                        android:hint="Enter State Name"
+                        android:visibility="gone">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDistrict"
+                            android:id="@+id/etCustomState"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapWords"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- District Dropdown -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/district"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerDistrict"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_search_bar"
+                        android:padding="8dp" />
+
+                    <!-- Custom District Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCustomDistrict"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/enter_custom_district"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCustomDistrict"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textCapWords"
