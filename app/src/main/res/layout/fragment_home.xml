@@ -37,7 +37,7 @@
                         android:id="@+id/tvHomeGreeting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Namaste, Citizen!"
+                        android:text="नमस्ते"
                         android:textColor="@color/white"
                         android:textSize="22sp"
                         android:textStyle="bold" />
@@ -47,11 +47,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="AI-powered government scheme recommendations"
+                        android:text="@string/app_tagline"
                         android:textColor="@color/primary_light"
                         android:textSize="13sp" />
 
                 </LinearLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/btnLanguage"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@color/white"
+                    android:contentDescription="Change Language"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_language"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Yojnika.Circle"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="2dp"
+                    app:tint="@color/primary" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/btnQuickProfile"
@@ -89,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
-                    android:text="ONNX On-Device Inference • Offline"
+                    android:text="@string/onnx_status"
                     android:textColor="@color/white"
                     android:textSize="11sp"
                     android:textStyle="bold" />
@@ -139,7 +154,7 @@
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Set Up"
+                    android:text="@string/setup_btn"
                     android:textColor="@color/primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -154,7 +169,7 @@
             android:paddingStart="16dp"
             android:paddingTop="16dp"
             android:paddingEnd="16dp"
-            android:text="Browse by Category"
+            android:text="@string/browse_by_category"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -201,7 +216,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Education"
+                            android:text="@string/category_education"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -236,7 +251,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Agriculture"
+                            android:text="@string/category_agriculture"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -271,7 +286,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Health"
+                            android:text="@string/category_health"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -306,7 +321,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Business"
+                            android:text="@string/category_business"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -340,7 +355,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Welfare"
+                            android:text="@string/category_welfare"
                             android:textColor="@color/text_primary"
                             android:textSize="12sp"
                             android:textStyle="bold" />
@@ -366,7 +381,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Top Recommended Schemes"
+                android:text="@string/top_recommended"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -406,7 +421,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="No recommendations yet"
+                    android:text="@string/no_recommendations"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -416,7 +431,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:gravity="center"
-                    android:text="Complete your profile to get personalized scheme recommendations tailored to your background."
+                    android:text="@string/complete_profile_desc"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
@@ -426,7 +441,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/primary"
-                    android:text="Complete Profile"
+                    android:text="@string/complete_profile_btn"
                     android:textColor="@color/white"
                     app:cornerRadius="8dp" />
 

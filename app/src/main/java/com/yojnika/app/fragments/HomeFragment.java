@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,7 @@ import com.yojnika.app.models.Scheme;
 import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.Constants;
+import com.yojnika.app.utils.LocaleHelper;
 import com.yojnika.app.utils.SharedPrefsManager;
 
 import java.io.File;
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     private TextView tvHomeGreeting;
     private TextView tvHomeSubtitle;
     private TextView tvMlEngineStatus;
-    private ShapeableImageView btnQuickProfile;
+    private ShapeableImageView btnQuickProfile, btnLanguage;
 
     private MaterialCardView cardProfileWarning;
     private MaterialButton btnSetupProfile;
@@ -68,6 +70,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         tvHomeSubtitle = view.findViewById(R.id.tvHomeSubtitle);
         tvMlEngineStatus = view.findViewById(R.id.tvMlEngineStatus);
         btnQuickProfile = view.findViewById(R.id.btnQuickProfile);
+        btnLanguage = view.findViewById(R.id.btnLanguage);
 
         cardProfileWarning = view.findViewById(R.id.cardProfileWarning);
         btnSetupProfile = view.findViewById(R.id.btnSetupProfile);
@@ -107,6 +110,8 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
             btnQuickProfile.setPadding(10, 10, 10, 10);
             btnQuickProfile.setImageTintList(requireContext().getColorStateList(R.color.primary));
         }
+        
+        tvHomeGreeting.setText(getString(R.string.home_greeting_default));
     }
 
     private void setupRecyclerView() {
@@ -124,12 +129,27 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         btnQuickProfile.setOnClickListener(openProfile);
         btnSetupProfile.setOnClickListener(openProfile);
         btnEmptyCreateProfile.setOnClickListener(openProfile);
+        btnLanguage.setOnClickListener(v -> showLanguageDialog());
 
         cardCategoryEducation.setOnClickListener(v -> openCategory("Education", "Education"));
         cardCategoryAgriculture.setOnClickListener(v -> openCategory("Agriculture", "Agri"));
         cardCategoryHealth.setOnClickListener(v -> openCategory("Health", "Health"));
         cardCategoryBusiness.setOnClickListener(v -> openCategory("Business", "Entrepre"));
         cardCategorySocial.setOnClickListener(v -> openCategory("Social Welfare", "Welfare"));
+    }
+
+    private void showLanguageDialog() {
+        String[] languages = {getString(R.string.english), getString(R.string.hindi), getString(R.string.marathi)};
+        String[] languageCodes = {"en", "hi", "mr"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(R.string.choose_language);
+        builder.setItems(languages, (dialog, which) -> {
+            String selectedLang = languageCodes[which];
+            LocaleHelper.setLocale(requireContext(), selectedLang);
+            requireActivity().recreate();
+        });
+        builder.show();
     }
 
     private void openCategory(String name, String dbCategory) {
@@ -149,8 +169,8 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         }
 
         if (profile == null || !profile.isComplete()) {
-            tvHomeGreeting.setText("Namaste, Citizen!");
-            tvHomeSubtitle.setText("Complete your profile for personalized recommendations");
+            tvHomeGreeting.setText(R.string.home_greeting_default);
+            tvHomeSubtitle.setText(R.string.profile_incomplete_warning);
             cardProfileWarning.setVisibility(View.VISIBLE);
             llHomeEmptyState.setVisibility(View.VISIBLE);
             rvRecommendations.setVisibility(View.GONE);
@@ -162,9 +182,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         rvRecommendations.setVisibility(View.VISIBLE);
         pbHomeLoading.setVisibility(View.VISIBLE);
 
-        String fullName = profile.getFullName();
-        String firstName = fullName.contains(" ") ? fullName.split(" ")[0] : fullName;
-        tvHomeGreeting.setText(getString(R.string.home_greeting, firstName));
+        tvHomeGreeting.setText(getString(R.string.home_greeting_default));
         tvHomeSubtitle.setText(getString(R.string.home_subtitle));
 
         repository.getRecommendedSchemes(profile, recommendations -> {

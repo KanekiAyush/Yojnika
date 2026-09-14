@@ -117,9 +117,9 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
 
         // Reset filter
         chipResetFilter.setOnClickListener(v -> {
-            selectedState = "All";
-            selectedType = "All";
-            selectedCategory = "All";
+            selectedState = getString(R.string.all_india);
+            selectedType = getString(R.string.filter_all);
+            selectedCategory = getString(R.string.filter_all);
             etSearchQuery.setText("");
             updateFilterChipsUI();
             performSearchAndFilter();
@@ -129,7 +129,7 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     private void showStateFilterDialog() {
         String[] states = getResources().getStringArray(R.array.indian_states_array);
         new AlertDialog.Builder(requireContext())
-                .setTitle("Filter by State / UT")
+                .setTitle(R.string.filter_state_title)
                 .setItems(states, (dialog, which) -> {
                     selectedState = states[which];
                     updateFilterChipsUI();
@@ -141,7 +141,7 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     private void showTypeFilterDialog() {
         String[] types = getResources().getStringArray(R.array.scheme_type_filter_array);
         new AlertDialog.Builder(requireContext())
-                .setTitle("Filter by Scheme Type")
+                .setTitle(R.string.filter_type_title)
                 .setItems(types, (dialog, which) -> {
                     selectedType = types[which];
                     updateFilterChipsUI();
@@ -153,7 +153,7 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     private void showCategoryFilterDialog() {
         String[] categories = getResources().getStringArray(R.array.category_filter_array);
         new AlertDialog.Builder(requireContext())
-                .setTitle("Filter by Category / Caste")
+                .setTitle(R.string.filter_category_title)
                 .setItems(categories, (dialog, which) -> {
                     selectedCategory = categories[which];
                     updateFilterChipsUI();
@@ -163,9 +163,10 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     }
 
     private void updateFilterChipsUI() {
-        chipStateFilter.setText("State: " + (selectedState.equals("All India") ? "All" : selectedState));
-        chipTypeFilter.setText("Type: " + (selectedType.equals("All Types") ? "All" : selectedType));
-        chipCategoryFilter.setText("Category: " + (selectedCategory.equals("All Categories") ? "All" : selectedCategory));
+        String allText = getString(R.string.all);
+        chipStateFilter.setText(getString(R.string.state_label, (selectedState.equals(getString(R.string.filter_all)) || selectedState.equals("All India")) ? allText : selectedState));
+        chipTypeFilter.setText(getString(R.string.type_label, (selectedType.equals(getString(R.string.filter_all)) || selectedType.equals("All Types")) ? allText : selectedType));
+        chipCategoryFilter.setText(getString(R.string.category_label, (selectedCategory.equals(getString(R.string.filter_all)) || selectedCategory.equals("All Categories")) ? allText : selectedCategory));
     }
 
     private void performSearchAndFilter() {

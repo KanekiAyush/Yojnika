@@ -1,5 +1,6 @@
 package com.yojnika.app.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.yojnika.app.fragments.BrowseFragment;
 import com.yojnika.app.fragments.HomeFragment;
 import com.yojnika.app.fragments.ProfileFragment;
 import com.yojnika.app.fragments.SavedFragment;
+import com.yojnika.app.utils.LocaleHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
     private final Fragment browseFragment = new BrowseFragment();
     private final Fragment savedFragment = new SavedFragment();
     private final Fragment profileFragment = new ProfileFragment();
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

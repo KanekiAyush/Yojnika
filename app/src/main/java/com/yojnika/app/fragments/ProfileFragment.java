@@ -29,6 +29,7 @@ import com.yojnika.app.activities.ProfileActivity;
 import com.yojnika.app.activities.ProfilePhotoViewerActivity;
 import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
+import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
 import java.io.File;
@@ -215,23 +216,44 @@ public class ProfileFragment extends Fragment {
         if (profile != null && profile.isComplete()) {
             tvProfileName.setText(profile.getFullName());
             tvProfileLocation.setText(profile.getDistrict() + ", " + profile.getState());
-            tvSummaryAge.setText(profile.getAge() + " years");
-            tvSummaryGender.setText(profile.getGender());
+            tvSummaryAge.setText(getString(R.string.years_label, String.valueOf(profile.getAge())));
+            
+            // Translate gender
+            tvSummaryGender.setText(translateValue(profile.getGender(), Constants.GENDERS, R.array.gender_array));
+            
             tvSummaryIncome.setText("₹ " + String.format("%,d", profile.getAnnualIncome()));
-            tvSummaryOccupation.setText(profile.getOccupation());
-            tvSummaryEducation.setText(profile.getEducationLevel());
-            tvSummaryCategory.setText(profile.getCategory());
-            tvSummaryMarital.setText(profile.getMaritalStatus());
+            
+            // Translate other fields
+            tvSummaryOccupation.setText(translateValue(profile.getOccupation(), Constants.OCCUPATIONS, R.array.occupation_array));
+            tvSummaryEducation.setText(translateValue(profile.getEducationLevel(), Constants.EDUCATION_LEVELS, R.array.education_array));
+            tvSummaryCategory.setText(translateValue(profile.getCategory(), Constants.CATEGORIES, R.array.category_array));
+            tvSummaryMarital.setText(translateValue(profile.getMaritalStatus(), Constants.MARITAL_STATUSES, R.array.marital_status_array));
+            
         } else {
-            tvProfileName.setText("Guest Citizen");
-            tvProfileLocation.setText("Profile not yet configured");
-            tvSummaryAge.setText("Not set");
-            tvSummaryGender.setText("Not set");
-            tvSummaryIncome.setText("Not set");
-            tvSummaryOccupation.setText("Not set");
-            tvSummaryEducation.setText("Not set");
-            tvSummaryCategory.setText("Not set");
-            tvSummaryMarital.setText("Not set");
+            tvProfileName.setText(R.string.guest_citizen);
+            tvProfileLocation.setText(R.string.profile_not_configured);
+            String notSet = getString(R.string.not_set);
+            tvSummaryAge.setText(notSet);
+            tvSummaryGender.setText(notSet);
+            tvSummaryIncome.setText(notSet);
+            tvSummaryOccupation.setText(notSet);
+            tvSummaryEducation.setText(notSet);
+            tvSummaryCategory.setText(notSet);
+            tvSummaryMarital.setText(notSet);
         }
+    }
+
+    private String translateValue(String englishValue, String[] englishArray, int arrayResId) {
+        if (englishValue == null) return getString(R.string.not_set);
+        
+        String[] translatedArray = getResources().getStringArray(arrayResId);
+        for (int i = 0; i < englishArray.length; i++) {
+            if (englishValue.equalsIgnoreCase(englishArray[i])) {
+                if (i < translatedArray.length) {
+                    return translatedArray[i];
+                }
+            }
+        }
+        return englishValue; // Return original if no match found (for "Other" values)
     }
 }

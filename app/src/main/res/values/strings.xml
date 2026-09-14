@@ -114,6 +114,70 @@
     <string name="enter_custom_income">Enter Annual Income (₹)</string>
     <string name="enter_custom_category">Enter Category / Caste</string>
     <string name="error_name_invalid">Please enter a valid name (letters only)</string>
+    <string name="all_india">All India</string>
+
+    <!-- Language -->
+    <string name="choose_language">Choose Your Language</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi (हिंदी)</string>
+    <string name="marathi">Marathi (मराठी)</string>
+    <string name="select_state_prompt">Select State</string>
+    <string name="other">Other</string>
+    <string name="personal_info">Personal Information</string>
+    <string name="socio_economic_details">Socio-Economic Details</string>
+    <string name="location">Location</string>
+    <string name="enter_state_name">Enter State Name</string>
+    <string name="error_age_range">Age must be between 1 and 100</string>
+    <string name="error_state_required">State is required</string>
+    <string name="error_category_required">Category is required</string>
+
+    <!-- Home UI -->
+    <string name="onnx_status">ONNX On-Device Inference • Offline</string>
+    <string name="browse_by_category">Browse by Category</string>
+    <string name="top_recommended">Top Recommended Schemes</string>
+    <string name="no_recommendations">No recommendations yet</string>
+    <string name="complete_profile_desc">Complete your profile to get personalized scheme recommendations tailored to your background.</string>
+    <string name="category_education">Education</string>
+    <string name="category_agriculture">Agriculture</string>
+    <string name="category_health">Health</string>
+    <string name="category_business">Business</string>
+    <string name="category_welfare">Welfare</string>
+    <string name="complete_profile_btn">Complete Profile</string>
+    <string name="setup_btn">Set Up</string>
+    <string name="home_greeting_default">Namaste, Citizen!</string>
+
+    <!-- Browse Filters -->
+    <string name="filter_state_title">Filter by State / UT</string>
+    <string name="filter_type_title">Filter by Scheme Type</string>
+    <string name="filter_category_title">Filter by Category / Caste</string>
+    <string name="all">All</string>
+    <string name="state_label">State: %1$s</string>
+    <string name="type_label">Type: %1$s</string>
+    <string name="category_label">Category: %1$s</string>
+
+    <!-- Profile Summary -->
+    <string name="guest_citizen">Guest Citizen</string>
+    <string name="profile_not_configured">Profile not yet configured</string>
+    <string name="not_set">Not set</string>
+    <string name="years_label">%1$s years</string>
+
+    <!-- Scheme Details -->
+    <string name="required_documents">Required Documents:</string>
+    <string name="cat_agri">Agriculture / Farmer</string>
+    <string name="cat_edu">Education / Youth</string>
+    <string name="cat_ent">Entrepreneurship</string>
+    <string name="cat_welfare">Citizen Welfare</string>
+    <string name="criteria_age_range">• Age Range: %1$s - %2$s years</string>
+    <string name="criteria_min_age">• Minimum Age: %1$s years</string>
+    <string name="criteria_all_ages">• Age Range: All age groups</string>
+    <string name="criteria_gender">• Eligible Gender: %1$s</string>
+    <string name="criteria_income">• Income Limit: Up to ₹ %1$s per year</string>
+    <string name="criteria_no_income">• Income Limit: No upper income ceiling</string>
+    <string name="criteria_occ">• Occupations: %1$s</string>
+    <string name="criteria_edu">• Education: %1$s</string>
+    <string name="criteria_states">• Eligible States: %1$s</string>
+    <string name="eligibility_details">Eligibility Details:</string>
+    <string name="none">None</string>
 
     <!-- Theme -->
     <string name="theme_title">Choose Theme</string>
@@ -205,7 +269,7 @@
     </string-array>
 
     <string-array name="indian_states_array">
-        <item>All India</item>
+        <item>Select State</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
         <item>Assam</item>
@@ -242,5 +306,6 @@
         <item>Andaman and Nicobar Islands</item>
         <item>Dadra and Nagar Haveli and Daman and Diu</item>
         <item>Lakshadweep</item>
+        <item>Other</item>
     </string-array>
 </resources>

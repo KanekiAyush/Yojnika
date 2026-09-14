@@ -121,8 +121,9 @@ public class SchemeDetailActivity extends AppCompatActivity {
             appText.append(scheme.getApplicationProcess());
         }
         if (scheme.getDocuments() != null && !scheme.getDocuments().isEmpty()) {
-            if (appText.length() > 0) appText.append("\n\nRequired Documents:\n");
-            else appText.append("Required Documents:\n");
+            String reqDocs = getString(R.string.required_documents);
+            if (appText.length() > 0) appText.append("\n\n").append(reqDocs).append("\n");
+            else appText.append(reqDocs).append("\n");
             appText.append(scheme.getDocuments());
         }
         tvApplicationProcess.setText(appText.toString());
@@ -133,49 +134,49 @@ public class SchemeDetailActivity extends AppCompatActivity {
         } else {
             String occ = scheme.getEligibleOccupations();
             if (occ != null && occ.contains("Farmer")) {
-                tvCategoryTag.setText("Agriculture / Farmer");
+                tvCategoryTag.setText(R.string.cat_agri);
             } else if (occ != null && occ.contains("Student")) {
-                tvCategoryTag.setText("Education / Youth");
+                tvCategoryTag.setText(R.string.cat_edu);
             } else if (occ != null && occ.contains("Business")) {
-                tvCategoryTag.setText("Entrepreneurship");
+                tvCategoryTag.setText(R.string.cat_ent);
             } else {
-                tvCategoryTag.setText("Citizen Welfare");
+                tvCategoryTag.setText(R.string.cat_welfare);
             }
         }
 
         // Criteria Age
         if (scheme.getMinAge() != null && scheme.getMaxAge() != null) {
-            tvCriteriaAge.setText("• Age Range: " + scheme.getMinAge() + " - " + scheme.getMaxAge() + " years");
+            tvCriteriaAge.setText(getString(R.string.criteria_age_range, scheme.getMinAge().toString(), scheme.getMaxAge().toString()));
         } else if (scheme.getMinAge() != null) {
-            tvCriteriaAge.setText("• Minimum Age: " + scheme.getMinAge() + " years");
+            tvCriteriaAge.setText(getString(R.string.criteria_min_age, scheme.getMinAge().toString()));
         } else {
-            tvCriteriaAge.setText("• Age Range: All age groups");
+            tvCriteriaAge.setText(R.string.criteria_all_ages);
         }
 
         // Criteria Gender
-        tvCriteriaGender.setText("• Eligible Gender: " + scheme.getGenderEligible());
+        tvCriteriaGender.setText(getString(R.string.criteria_gender, scheme.getGenderEligible()));
 
         // Criteria Income
         if (scheme.getIncomeLimit() != null && scheme.getIncomeLimit() > 0) {
-            tvCriteriaIncome.setText("• Income Limit: Up to ₹ " + String.format("%,d", scheme.getIncomeLimit()) + " per year");
+            tvCriteriaIncome.setText(getString(R.string.criteria_income, String.format("%,d", scheme.getIncomeLimit())));
         } else {
-            tvCriteriaIncome.setText("• Income Limit: No upper income ceiling");
+            tvCriteriaIncome.setText(R.string.criteria_no_income);
         }
 
         // Criteria Occupations
         String cleanOcc = scheme.getEligibleOccupations().replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ");
-        tvCriteriaOccupation.setText("• Occupations: " + cleanOcc);
+        tvCriteriaOccupation.setText(getString(R.string.criteria_occ, cleanOcc));
 
         // Criteria Education
-        String edu = scheme.getMinEducationLevel() != null ? scheme.getMinEducationLevel() : "None";
-        tvCriteriaEducation.setText("• Education: " + edu);
+        String edu = scheme.getMinEducationLevel() != null ? scheme.getMinEducationLevel() : getString(R.string.none);
+        tvCriteriaEducation.setText(getString(R.string.criteria_edu, edu));
 
         // Criteria State
         String cleanState = scheme.getEligibleStates().replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ");
         if (scheme.getEligibilityText() != null && !scheme.getEligibilityText().isEmpty()) {
-            tvCriteriaState.setText("• Eligible States: " + cleanState + "\n\nEligibility Details:\n" + scheme.getEligibilityText());
+            tvCriteriaState.setText(getString(R.string.criteria_states, cleanState) + "\n\n" + getString(R.string.eligibility_details) + "\n" + scheme.getEligibilityText());
         } else {
-            tvCriteriaState.setText("• Eligible States: " + cleanState);
+            tvCriteriaState.setText(getString(R.string.criteria_states, cleanState));
         }
 
         updateBookmarkIcon(scheme.isBookmarked());
