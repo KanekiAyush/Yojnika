@@ -3,6 +3,8 @@ package com.yojnika.app.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorWindow;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -23,6 +25,55 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
     private static SchemeDatabaseHelper instance;
     private final Context mContext;
 
+    public static final String[] FULL_PROJECTION = new String[]{
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_ID,
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME,
+            SchemeContract.SchemeEntry.COLUMN_SLUG,
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_DESCRIPTION,
+            SchemeContract.SchemeEntry.COLUMN_MIN_AGE,
+            SchemeContract.SchemeEntry.COLUMN_MAX_AGE,
+            SchemeContract.SchemeEntry.COLUMN_GENDER_ELIGIBLE,
+            SchemeContract.SchemeEntry.COLUMN_INCOME_LIMIT,
+            SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS,
+            SchemeContract.SchemeEntry.COLUMN_MIN_EDUCATION_LEVEL,
+            SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY,
+            SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_STATES,
+            SchemeContract.SchemeEntry.COLUMN_MARITAL_STATUS,
+            SchemeContract.SchemeEntry.COLUMN_BENEFITS,
+            SchemeContract.SchemeEntry.COLUMN_APPLICATION_PROCESS,
+            SchemeContract.SchemeEntry.COLUMN_DOCUMENTS,
+            SchemeContract.SchemeEntry.COLUMN_OFFICIAL_WEBSITE,
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_TYPE,
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY,
+            SchemeContract.SchemeEntry.COLUMN_TAGS,
+            SchemeContract.SchemeEntry.COLUMN_ELIGIBILITY_TEXT,
+            SchemeContract.SchemeEntry.COLUMN_CREATED_DATE,
+            SchemeContract.SchemeEntry.COLUMN_IS_ACTIVE,
+            SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED
+    };
+
+    public static final String[] SUMMARY_PROJECTION = new String[]{
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_ID,
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME,
+            SchemeContract.SchemeEntry.COLUMN_SLUG,
+            SchemeContract.SchemeEntry.COLUMN_MIN_AGE,
+            SchemeContract.SchemeEntry.COLUMN_MAX_AGE,
+            SchemeContract.SchemeEntry.COLUMN_GENDER_ELIGIBLE,
+            SchemeContract.SchemeEntry.COLUMN_INCOME_LIMIT,
+            SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS,
+            SchemeContract.SchemeEntry.COLUMN_MIN_EDUCATION_LEVEL,
+            SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY,
+            SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_STATES,
+            SchemeContract.SchemeEntry.COLUMN_MARITAL_STATUS,
+            SchemeContract.SchemeEntry.COLUMN_OFFICIAL_WEBSITE,
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_TYPE,
+            SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY,
+            SchemeContract.SchemeEntry.COLUMN_TAGS,
+            SchemeContract.SchemeEntry.COLUMN_CREATED_DATE,
+            SchemeContract.SchemeEntry.COLUMN_IS_ACTIVE,
+            SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED
+    };
+
     public static synchronized SchemeDatabaseHelper getInstance(Context context) {
         if (instance == null) {
             instance = new SchemeDatabaseHelper(context.getApplicationContext());
@@ -38,13 +89,11 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
 
     private synchronized void checkAndCopyDatabase() {
         File dbFile = mContext.getDatabasePath(Constants.DATABASE_NAME);
-        // Force re-copy if file exists but is too small (meaning it's likely an empty table created by onCreate)
-        if (!dbFile.exists() || dbFile.length() < 1000000) { 
+        if (!dbFile.exists() || dbFile.length() < 1000000) {
             try {
                 if (dbFile.getParentFile() != null) {
                     dbFile.getParentFile().mkdirs();
                 }
-                // Try to copy the large data-filled database from assets
                 InputStream is = mContext.getAssets().open("yojnika_schemes.db");
                 OutputStream os = new FileOutputStream(dbFile);
                 byte[] buffer = new byte[8192];
@@ -56,9 +105,27 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
                 os.close();
                 is.close();
                 Log.i(TAG, "Successfully copied prebuilt SQLite database from assets.");
+
+                try (SQLiteDatabase checkDb = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE)) {
+                    checkDb.execSQL("PRAGMA user_version = " + Constants.DATABASE_VERSION);
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed setting user_version PRAGMA", e);
+                }
             } catch (IOException e) {
                 Log.e(TAG, "Failed to copy prebuilt SQLite database from assets", e);
             }
+        }
+
+        Log.d(TAG, "DB path: " + dbFile.getAbsolutePath());
+        Log.d(TAG, "DB size: " + dbFile.length());
+        try (SQLiteDatabase checkDb = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY)) {
+            Cursor c = checkDb.rawQuery("SELECT COUNT(*) FROM " + SchemeContract.SchemeEntry.TABLE_NAME, null);
+            if (c != null && c.moveToFirst()) {
+                Log.d(TAG, "Row count: " + c.getInt(0));
+                c.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error logging database row count", e);
         }
     }
 
@@ -115,7 +182,7 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         try {
             cursor = db.query(
                     SchemeContract.SchemeEntry.TABLE_NAME,
-                    null,
+                    SUMMARY_PROJECTION,
                     SchemeContract.SchemeEntry.COLUMN_IS_ACTIVE + " = 1",
                     null,
                     null,
@@ -123,10 +190,12 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
                     SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME + " ASC"
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    schemes.add(cursorToScheme(cursor));
-                } while (cursor.moveToNext());
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        schemes.add(cursorToScheme(cursor));
+                    } while (cursor.moveToNext());
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, "Error fetching all schemes", e);
@@ -144,7 +213,7 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         try {
             cursor = db.query(
                     SchemeContract.SchemeEntry.TABLE_NAME,
-                    null,
+                    FULL_PROJECTION,
                     SchemeContract.SchemeEntry.COLUMN_SCHEME_ID + " = ?",
                     new String[]{String.valueOf(schemeId)},
                     null,
@@ -220,7 +289,7 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
             String[] args = selectionArgs.isEmpty() ? null : selectionArgs.toArray(new String[0]);
             cursor = db.query(
                     SchemeContract.SchemeEntry.TABLE_NAME,
-                    null,
+                    SUMMARY_PROJECTION,
                     selection.toString(),
                     args,
                     null,
@@ -228,10 +297,12 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
                     SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME + " ASC"
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    schemes.add(cursorToScheme(cursor));
-                } while (cursor.moveToNext());
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        schemes.add(cursorToScheme(cursor));
+                    } while (cursor.moveToNext());
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, "Error filtering schemes", e);
@@ -301,7 +372,7 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
 
             cursor = db.query(
                     SchemeContract.SchemeEntry.TABLE_NAME,
-                    null,
+                    SUMMARY_PROJECTION,
                     selection.toString(),
                     args,
                     null,
@@ -310,10 +381,12 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
                     limitOffset
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    schemes.add(cursorToScheme(cursor));
-                } while (cursor.moveToNext());
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        schemes.add(cursorToScheme(cursor));
+                    } while (cursor.moveToNext());
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, "Error filtering schemes paged", e);
@@ -332,7 +405,7 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         try {
             cursor = db.query(
                     SchemeContract.SchemeEntry.TABLE_NAME,
-                    null,
+                    SUMMARY_PROJECTION,
                     SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED + " = 1",
                     null,
                     null,
@@ -340,10 +413,12 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
                     SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME + " ASC"
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    schemes.add(cursorToScheme(cursor));
-                } while (cursor.moveToNext());
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        schemes.add(cursorToScheme(cursor));
+                    } while (cursor.moveToNext());
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, "Error fetching bookmarked schemes", e);
@@ -392,9 +467,21 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
 
     private Scheme cursorToScheme(Cursor cursor) {
         Scheme scheme = new Scheme();
-        scheme.setSchemeId(cursor.getInt(cursor.getColumnIndexOrThrow(SchemeContract.SchemeEntry.COLUMN_SCHEME_ID)));
-        scheme.setSchemeName(cursor.getString(cursor.getColumnIndexOrThrow(SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME)));
-        scheme.setSchemeDescription(cursor.getString(cursor.getColumnIndexOrThrow(SchemeContract.SchemeEntry.COLUMN_SCHEME_DESCRIPTION)));
+
+        int idIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_SCHEME_ID);
+        if (idIdx != -1 && !cursor.isNull(idIdx)) {
+            scheme.setSchemeId(cursor.getInt(idIdx));
+        }
+
+        int nameIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME);
+        if (nameIdx != -1 && !cursor.isNull(nameIdx)) {
+            scheme.setSchemeName(cursor.getString(nameIdx));
+        }
+
+        int descIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_SCHEME_DESCRIPTION);
+        if (descIdx != -1 && !cursor.isNull(descIdx)) {
+            scheme.setSchemeDescription(cursor.getString(descIdx));
+        }
 
         int minAgeIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_MIN_AGE);
         if (minAgeIdx != -1 && !cursor.isNull(minAgeIdx)) {
@@ -407,7 +494,7 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         }
 
         int genderIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_GENDER_ELIGIBLE);
-        if (genderIdx != -1) {
+        if (genderIdx != -1 && !cursor.isNull(genderIdx)) {
             scheme.setGenderEligible(cursor.getString(genderIdx));
         }
 
@@ -417,88 +504,87 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         }
 
         int occIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS);
-        if (occIdx != -1) {
+        if (occIdx != -1 && !cursor.isNull(occIdx)) {
             scheme.setEligibleOccupations(cursor.getString(occIdx));
         }
 
         int eduIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_MIN_EDUCATION_LEVEL);
-        if (eduIdx != -1) {
+        if (eduIdx != -1 && !cursor.isNull(eduIdx)) {
             scheme.setMinEducationLevel(cursor.getString(eduIdx));
         }
 
         int catIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY);
-        if (catIdx != -1) {
+        if (catIdx != -1 && !cursor.isNull(catIdx)) {
             scheme.setEligibleCategory(cursor.getString(catIdx));
         }
 
         int stateIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_STATES);
-        if (stateIdx != -1) {
+        if (stateIdx != -1 && !cursor.isNull(stateIdx)) {
             scheme.setEligibleStates(cursor.getString(stateIdx));
         }
 
         int maritalIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_MARITAL_STATUS);
-        if (maritalIdx != -1) {
+        if (maritalIdx != -1 && !cursor.isNull(maritalIdx)) {
             scheme.setMaritalStatusRequirement(cursor.getString(maritalIdx));
         }
 
         int benefitsIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_BENEFITS);
-        if (benefitsIdx != -1) {
+        if (benefitsIdx != -1 && !cursor.isNull(benefitsIdx)) {
             scheme.setBenefits(cursor.getString(benefitsIdx));
         }
 
         int appIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_APPLICATION_PROCESS);
-        if (appIdx != -1) {
+        if (appIdx != -1 && !cursor.isNull(appIdx)) {
             scheme.setApplicationProcess(cursor.getString(appIdx));
         }
 
         int websiteIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_OFFICIAL_WEBSITE);
-        if (websiteIdx != -1) {
+        if (websiteIdx != -1 && !cursor.isNull(websiteIdx)) {
             scheme.setOfficialWebsite(cursor.getString(websiteIdx));
         }
 
         int typeIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_SCHEME_TYPE);
-        if (typeIdx != -1) {
+        if (typeIdx != -1 && !cursor.isNull(typeIdx)) {
             scheme.setSchemeType(cursor.getString(typeIdx));
         }
 
         int createdDateIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_CREATED_DATE);
-        if (createdDateIdx != -1) {
+        if (createdDateIdx != -1 && !cursor.isNull(createdDateIdx)) {
             scheme.setCreatedDate(cursor.getString(createdDateIdx));
         }
 
         int activeIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_IS_ACTIVE);
-        if (activeIdx != -1) {
+        if (activeIdx != -1 && !cursor.isNull(activeIdx)) {
             scheme.setActive(cursor.getInt(activeIdx) == 1);
         }
 
         int bookmarkedIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED);
-        if (bookmarkedIdx != -1) {
+        if (bookmarkedIdx != -1 && !cursor.isNull(bookmarkedIdx)) {
             scheme.setBookmarked(cursor.getInt(bookmarkedIdx) == 1);
         }
 
-        // New CSV fields
         int slugIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_SLUG);
-        if (slugIdx != -1) {
+        if (slugIdx != -1 && !cursor.isNull(slugIdx)) {
             scheme.setSlug(cursor.getString(slugIdx));
         }
 
         int docsIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_DOCUMENTS);
-        if (docsIdx != -1) {
+        if (docsIdx != -1 && !cursor.isNull(docsIdx)) {
             scheme.setDocuments(cursor.getString(docsIdx));
         }
 
         int schemeCategoryIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY);
-        if (schemeCategoryIdx != -1) {
+        if (schemeCategoryIdx != -1 && !cursor.isNull(schemeCategoryIdx)) {
             scheme.setSchemeCategory(cursor.getString(schemeCategoryIdx));
         }
 
         int tagsIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_TAGS);
-        if (tagsIdx != -1) {
+        if (tagsIdx != -1 && !cursor.isNull(tagsIdx)) {
             scheme.setTags(cursor.getString(tagsIdx));
         }
 
         int eligTextIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_ELIGIBILITY_TEXT);
-        if (eligTextIdx != -1) {
+        if (eligTextIdx != -1 && !cursor.isNull(eligTextIdx)) {
             scheme.setEligibilityText(cursor.getString(eligTextIdx));
         }
 
