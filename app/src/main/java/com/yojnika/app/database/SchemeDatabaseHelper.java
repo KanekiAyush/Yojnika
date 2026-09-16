@@ -243,6 +243,88 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         return schemes;
     }
 
+    public List<Scheme> searchAndFilterSchemesPaged(int page, int pageSize, String query, String stateFilter, String typeFilter, String categoryFilter) {
+        List<Scheme> schemes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        try {
+            StringBuilder selection = new StringBuilder(SchemeContract.SchemeEntry.COLUMN_IS_ACTIVE + " = 1");
+            List<String> selectionArgs = new ArrayList<>();
+
+            if (query != null && !query.trim().isEmpty()) {
+                selection.append(" AND (")
+                        .append(SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_SCHEME_DESCRIPTION).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_BENEFITS).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBILITY_TEXT).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_TAGS).append(" LIKE ?)");
+                String pattern = "%" + query.trim() + "%";
+                selectionArgs.add(pattern);
+                selectionArgs.add(pattern);
+                selectionArgs.add(pattern);
+                selectionArgs.add(pattern);
+                selectionArgs.add(pattern);
+                selectionArgs.add(pattern);
+            }
+
+            if (typeFilter != null && !typeFilter.equals("All") && !typeFilter.equals("All Types")) {
+                selection.append(" AND ").append(SchemeContract.SchemeEntry.COLUMN_SCHEME_TYPE).append(" LIKE ?");
+                selectionArgs.add("%" + typeFilter + "%");
+            }
+
+            if (stateFilter != null && !stateFilter.equals("All") && !stateFilter.equals("All India")) {
+                selection.append(" AND (")
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_STATES).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_STATES).append(" LIKE '%All India%')");
+                selectionArgs.add("%" + stateFilter + "%");
+            }
+
+            if (categoryFilter != null && !categoryFilter.equals("All") && !categoryFilter.equals("All Categories")) {
+                selection.append(" AND (")
+                        .append(SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_TAGS).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS).append(" LIKE ? OR ")
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE '%All%')");
+                String catPattern = "%" + categoryFilter + "%";
+                selectionArgs.add(catPattern);
+                selectionArgs.add(catPattern);
+                selectionArgs.add(catPattern);
+                selectionArgs.add(catPattern);
+            }
+
+            String[] args = selectionArgs.isEmpty() ? null : selectionArgs.toArray(new String[0]);
+            int offset = Math.max(0, (page - 1) * pageSize);
+            String limitOffset = offset + ", " + pageSize;
+
+            cursor = db.query(
+                    SchemeContract.SchemeEntry.TABLE_NAME,
+                    null,
+                    selection.toString(),
+                    args,
+                    null,
+                    null,
+                    SchemeContract.SchemeEntry.COLUMN_SCHEME_NAME + " ASC",
+                    limitOffset
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    schemes.add(cursorToScheme(cursor));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error filtering schemes paged", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return schemes;
+    }
+
     public List<Scheme> getBookmarkedSchemes() {
         List<Scheme> schemes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

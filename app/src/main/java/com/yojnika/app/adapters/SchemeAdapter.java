@@ -60,18 +60,22 @@ public class SchemeAdapter extends RecyclerView.Adapter<SchemeAdapter.SchemeView
         holder.tvDescription.setText(scheme.getSchemeDescription());
         holder.tvSchemeType.setText(scheme.getSchemeType());
 
-        // Extract first eligible occupation or category
-        String occ = scheme.getEligibleOccupations();
-        if (occ != null && occ.contains("Farmer")) {
-            holder.tvCategory.setText("Farmer");
-        } else if (occ != null && occ.contains("Student")) {
-            holder.tvCategory.setText("Student");
-        } else if (occ != null && occ.contains("Business")) {
-            holder.tvCategory.setText("Business");
-        } else if (occ != null && occ.contains("Unemployed")) {
-            holder.tvCategory.setText("Youth / Unemployed");
+        // Dynamic Category Tag
+        if (scheme.getSchemeCategory() != null && !scheme.getSchemeCategory().trim().isEmpty()) {
+            holder.tvCategory.setText(scheme.getSchemeCategory().trim());
         } else {
-            holder.tvCategory.setText("All Citizens");
+            String occ = scheme.getEligibleOccupations();
+            if (occ != null && occ.contains("Farmer")) {
+                holder.tvCategory.setText("Farmer");
+            } else if (occ != null && occ.contains("Student")) {
+                holder.tvCategory.setText("Student");
+            } else if (occ != null && occ.contains("Business")) {
+                holder.tvCategory.setText("Business");
+            } else if (occ != null && occ.contains("Unemployed")) {
+                holder.tvCategory.setText("Youth / Unemployed");
+            } else {
+                holder.tvCategory.setText("General");
+            }
         }
 
         // Benefits preview

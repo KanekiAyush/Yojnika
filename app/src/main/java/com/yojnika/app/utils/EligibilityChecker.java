@@ -47,6 +47,10 @@ public class EligibilityChecker {
         public String getStatus() {
             return status;
         }
+
+        public boolean isEligible() {
+            return matchedCount >= totalCount;
+        }
     }
 
     public static EligibilityReport checkEligibility(UserProfile profile, Scheme scheme) {
@@ -145,7 +149,7 @@ public class EligibilityChecker {
         }
 
         String status;
-        if (score >= 0.99f) {
+        if (score >= 0.999f) {
             status = "Eligible";
         } else if (score >= 0.50f) {
             status = "Partially Eligible";

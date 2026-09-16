@@ -75,11 +75,78 @@
 
             </LinearLayout>
 
+            <!-- Category Tabs Row (Education, Health, Agriculture, Women, Employment, Housing) -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupCategoryTabs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTabAll"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="All" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTabEducation"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Education" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTabHealth"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Health" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTabAgriculture"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Agriculture" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTabWomen"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Women" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTabEmployment"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Employment" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipTabHousing"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Housing" />
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
             <!-- Filters Row -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -216,6 +283,46 @@
             </LinearLayout>
 
         </FrameLayout>
+
+        <!-- Pagination Bar -->
+        <LinearLayout
+            android:id="@+id/llBrowsePagination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/surface"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBrowsePrevious"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Previous"
+                android:textColor="@color/primary"
+                app:strokeColor="@color/primary" />
+
+            <TextView
+                android:id="@+id/tvBrowsePageIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Page 1"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBrowseNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary"
+                android:text="Next"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
     </LinearLayout>
 

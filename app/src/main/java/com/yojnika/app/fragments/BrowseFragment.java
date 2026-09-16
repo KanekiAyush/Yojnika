@@ -17,16 +17,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.yojnika.app.R;
 import com.yojnika.app.activities.SchemeDetailActivity;
 import com.yojnika.app.adapters.SchemeAdapter;
 import com.yojnika.app.models.Scheme;
 import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.Constants;
+import com.yojnika.app.viewmodels.BrowseViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,7 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
 
     private EditText etSearchQuery;
     private ImageView btnClearSearch;
+    private ChipGroup chipGroupCategoryTabs;
     private Chip chipStateFilter;
     private Chip chipTypeFilter;
     private Chip chipCategoryFilter;
@@ -43,12 +48,17 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     private RecyclerView rvBrowseSchemes;
     private LinearLayout llBrowseEmptyState;
 
+    private LinearLayout llBrowsePagination;
+    private MaterialButton btnBrowsePrevious, btnBrowseNext;
+    private TextView tvBrowsePageIndicator;
+
     private SchemeRepository repository;
+    private BrowseViewModel viewModel;
     private SchemeAdapter adapter;
     private final List<Scheme> schemeList = new ArrayList<>();
 
-    private String selectedState = "All";
-    private String selectedType = "All";
+    private String selectedState = "All India";
+    private String selectedType = "All Types";
     private String selectedCategory = "All";
 
     @Nullable
@@ -57,9 +67,11 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
         View view = inflater.inflate(R.layout.fragment_browse, container, false);
 
         repository = SchemeRepository.getInstance(requireContext());
+        viewModel = new ViewModelProvider(this).get(BrowseViewModel.class);
 
         etSearchQuery = view.findViewById(R.id.etSearchQuery);
         btnClearSearch = view.findViewById(R.id.btnClearSearch);
+        chipGroupCategoryTabs = view.findViewById(R.id.chipGroupCategoryTabs);
         chipStateFilter = view.findViewById(R.id.chipStateFilter);
         chipTypeFilter = view.findViewById(R.id.chipTypeFilter);
         chipCategoryFilter = view.findViewById(R.id.chipCategoryFilter);
@@ -68,8 +80,16 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
         rvBrowseSchemes = view.findViewById(R.id.rvBrowseSchemes);
         llBrowseEmptyState = view.findViewById(R.id.llBrowseEmptyState);
 
+        llBrowsePagination = view.findViewById(R.id.llBrowsePagination);
+        btnBrowsePrevious = view.findViewById(R.id.btnBrowsePrevious);
+        btnBrowseNext = view.findViewById(R.id.btnBrowseNext);
+        tvBrowsePageIndicator = view.findViewById(R.id.tvBrowsePageIndicator);
+
         setupRecyclerView();
+        setupCategoryTabs();
         setupSearchAndFilters();
+        setupPaginationListeners();
+        observeViewModel();
 
         return view;
     }
@@ -77,13 +97,37 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     @Override
     public void onResume() {
         super.onResume();
-        performSearchAndFilter();
+        viewModel.loadSchemes();
     }
 
     private void setupRecyclerView() {
         rvBrowseSchemes.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new SchemeAdapter(requireContext(), schemeList, false, this);
         rvBrowseSchemes.setAdapter(adapter);
+    }
+
+    private void setupCategoryTabs() {
+        if (chipGroupCategoryTabs != null) {
+            chipGroupCategoryTabs.setOnCheckedChangeListener((group, checkedId) -> {
+                if (checkedId == R.id.chipTabEducation) {
+                    selectedCategory = "Education";
+                } else if (checkedId == R.id.chipTabHealth) {
+                    selectedCategory = "Health";
+                } else if (checkedId == R.id.chipTabAgriculture) {
+                    selectedCategory = "Agriculture";
+                } else if (checkedId == R.id.chipTabWomen) {
+                    selectedCategory = "Women";
+                } else if (checkedId == R.id.chipTabEmployment) {
+                    selectedCategory = "Employment";
+                } else if (checkedId == R.id.chipTabHousing) {
+                    selectedCategory = "Housing";
+                } else {
+                    selectedCategory = "All";
+                }
+                updateFilterChipsUI();
+                performSearchAndFilter();
+            });
+        }
     }
 
     private void setupSearchAndFilters() {
@@ -106,23 +150,54 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
             btnClearSearch.setVisibility(View.GONE);
         });
 
-        // State filter dialog
         chipStateFilter.setOnClickListener(v -> showStateFilterDialog());
-
-        // Type filter dialog
         chipTypeFilter.setOnClickListener(v -> showTypeFilterDialog());
-
-        // Category filter dialog
         chipCategoryFilter.setOnClickListener(v -> showCategoryFilterDialog());
 
-        // Reset filter
         chipResetFilter.setOnClickListener(v -> {
-            selectedState = getString(R.string.all_india);
-            selectedType = getString(R.string.filter_all);
-            selectedCategory = getString(R.string.filter_all);
+            selectedState = "All India";
+            selectedType = "All Types";
+            selectedCategory = "All";
             etSearchQuery.setText("");
+            if (chipGroupCategoryTabs != null) {
+                chipGroupCategoryTabs.check(R.id.chipTabAll);
+            }
             updateFilterChipsUI();
             performSearchAndFilter();
+        });
+    }
+
+    private void setupPaginationListeners() {
+        btnBrowsePrevious.setOnClickListener(v -> viewModel.previousPage());
+        btnBrowseNext.setOnClickListener(v -> viewModel.nextPage());
+    }
+
+    private void observeViewModel() {
+        viewModel.getPagedSchemes().observe(getViewLifecycleOwner(), schemes -> {
+            schemeList.clear();
+            if (schemes != null && !schemes.isEmpty()) {
+                schemeList.addAll(schemes);
+                adapter.updateData(schemeList);
+                rvBrowseSchemes.setVisibility(View.VISIBLE);
+                llBrowseEmptyState.setVisibility(View.GONE);
+                llBrowsePagination.setVisibility(View.VISIBLE);
+
+                tvBrowseCount.setText("Showing page " + viewModel.getCurrentPage() + " (" + schemeList.size() + " schemes on page)");
+                tvBrowsePageIndicator.setText("Page " + viewModel.getCurrentPage());
+                btnBrowsePrevious.setEnabled(viewModel.getCurrentPage() > 1);
+                btnBrowseNext.setEnabled(schemeList.size() >= 20);
+            } else {
+                adapter.updateData(new ArrayList<>());
+                rvBrowseSchemes.setVisibility(View.GONE);
+                llBrowseEmptyState.setVisibility(View.VISIBLE);
+                tvBrowseCount.setText("No matching schemes found");
+
+                if (viewModel.getCurrentPage() > 1) {
+                    btnBrowseNext.setEnabled(false);
+                } else {
+                    llBrowsePagination.setVisibility(View.GONE);
+                }
+            }
         });
     }
 
@@ -171,26 +246,7 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
 
     private void performSearchAndFilter() {
         String query = etSearchQuery.getText().toString().trim();
-        repository.searchAndFilterSchemes(query, selectedState, selectedType, selectedCategory, list -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
-                schemeList.clear();
-                if (list != null) {
-                    schemeList.addAll(list);
-                }
-                adapter.updateData(schemeList);
-
-                tvBrowseCount.setText("Showing " + schemeList.size() + " government schemes");
-
-                if (schemeList.isEmpty()) {
-                    llBrowseEmptyState.setVisibility(View.VISIBLE);
-                    rvBrowseSchemes.setVisibility(View.GONE);
-                } else {
-                    llBrowseEmptyState.setVisibility(View.GONE);
-                    rvBrowseSchemes.setVisibility(View.VISIBLE);
-                }
-            });
-        });
+        viewModel.setFilters(query, selectedState, selectedType, selectedCategory);
     }
 
     @Override

@@ -16,24 +16,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.yojnika.app.R;
 import com.yojnika.app.activities.CategorySchemesActivity;
 import com.yojnika.app.activities.ProfileActivity;
 import com.yojnika.app.activities.SchemeDetailActivity;
 import com.yojnika.app.adapters.SchemeAdapter;
-import com.yojnika.app.models.Recommendation;
 import com.yojnika.app.models.Scheme;
-import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.LocaleHelper;
 import com.yojnika.app.utils.SharedPrefsManager;
+import com.yojnika.app.viewmodels.HomeViewModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,9 +53,14 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     private MaterialButton btnEmptyCreateProfile;
     private ProgressBar pbHomeLoading;
 
+    private LinearLayout llHomePagination;
+    private MaterialButton btnHomePrevious, btnHomeNext;
+    private TextView tvHomePageIndicator;
+
     private MaterialCardView cardCategoryEducation, cardCategoryAgriculture, cardCategoryHealth, cardCategoryBusiness, cardCategorySocial;
 
     private SchemeRepository repository;
+    private HomeViewModel viewModel;
     private SchemeAdapter adapter;
     private final List<Scheme> recommendedSchemes = new ArrayList<>();
 
@@ -65,6 +70,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         repository = SchemeRepository.getInstance(requireContext());
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         tvHomeGreeting = view.findViewById(R.id.tvHomeGreeting);
         tvHomeSubtitle = view.findViewById(R.id.tvHomeSubtitle);
@@ -79,6 +85,11 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         btnEmptyCreateProfile = view.findViewById(R.id.btnEmptyCreateProfile);
         pbHomeLoading = view.findViewById(R.id.pbHomeLoading);
 
+        llHomePagination = view.findViewById(R.id.llHomePagination);
+        btnHomePrevious = view.findViewById(R.id.btnHomePrevious);
+        btnHomeNext = view.findViewById(R.id.btnHomeNext);
+        tvHomePageIndicator = view.findViewById(R.id.tvHomePageIndicator);
+
         cardCategoryEducation = view.findViewById(R.id.cardCategoryEducation);
         cardCategoryAgriculture = view.findViewById(R.id.cardCategoryAgriculture);
         cardCategoryHealth = view.findViewById(R.id.cardCategoryHealth);
@@ -87,6 +98,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
 
         setupRecyclerView();
         setupClickListeners();
+        observeViewModel();
 
         return view;
     }
@@ -132,10 +144,56 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         btnLanguage.setOnClickListener(v -> showLanguageDialog());
 
         cardCategoryEducation.setOnClickListener(v -> openCategory("Education", "Education"));
-        cardCategoryAgriculture.setOnClickListener(v -> openCategory("Agriculture", "Agri"));
+        cardCategoryAgriculture.setOnClickListener(v -> openCategory("Agriculture", "Agriculture"));
         cardCategoryHealth.setOnClickListener(v -> openCategory("Health", "Health"));
-        cardCategoryBusiness.setOnClickListener(v -> openCategory("Business", "Entrepre"));
+        cardCategoryBusiness.setOnClickListener(v -> openCategory("Business", "Business"));
         cardCategorySocial.setOnClickListener(v -> openCategory("Social Welfare", "Welfare"));
+
+        btnHomePrevious.setOnClickListener(v -> viewModel.previousPage());
+        btnHomeNext.setOnClickListener(v -> viewModel.nextPage());
+    }
+
+    private void observeViewModel() {
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            pbHomeLoading.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        });
+
+        viewModel.getIsProfileComplete().observe(getViewLifecycleOwner(), isComplete -> {
+            if (isComplete) {
+                cardProfileWarning.setVisibility(View.GONE);
+                llHomeEmptyState.setVisibility(View.GONE);
+                rvRecommendations.setVisibility(View.VISIBLE);
+                tvHomeSubtitle.setText(getString(R.string.home_subtitle));
+            } else {
+                cardProfileWarning.setVisibility(View.VISIBLE);
+                llHomeEmptyState.setVisibility(View.VISIBLE);
+                rvRecommendations.setVisibility(View.GONE);
+                llHomePagination.setVisibility(View.GONE);
+                tvHomeSubtitle.setText(R.string.profile_incomplete_warning);
+            }
+        });
+
+        viewModel.getMatchedSchemes().observe(getViewLifecycleOwner(), schemes -> {
+            recommendedSchemes.clear();
+            if (schemes != null && !schemes.isEmpty()) {
+                recommendedSchemes.addAll(schemes);
+                adapter.updateData(recommendedSchemes);
+                rvRecommendations.setVisibility(View.VISIBLE);
+                llHomeEmptyState.setVisibility(View.GONE);
+                llHomePagination.setVisibility(View.VISIBLE);
+
+                tvHomePageIndicator.setText("Page " + viewModel.getCurrentPage());
+                btnHomePrevious.setEnabled(viewModel.hasPreviousPage());
+                btnHomeNext.setEnabled(viewModel.hasNextPage());
+            } else {
+                adapter.updateData(new ArrayList<>());
+                rvRecommendations.setVisibility(View.GONE);
+                llHomePagination.setVisibility(View.GONE);
+                if (Boolean.TRUE.equals(viewModel.getIsProfileComplete().getValue())) {
+                    llHomeEmptyState.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void showLanguageDialog() {
@@ -160,54 +218,13 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     }
 
     private void loadRecommendations() {
-        UserProfile profile = repository.getUserProfile();
-
         if (repository.isMlModelLoaded()) {
             tvMlEngineStatus.setText("ONNX On-Device Inference • Active");
         } else {
             tvMlEngineStatus.setText("Edge ML & Rule Engine • Active");
         }
 
-        if (profile == null || !profile.isComplete()) {
-            tvHomeGreeting.setText(R.string.home_greeting_default);
-            tvHomeSubtitle.setText(R.string.profile_incomplete_warning);
-            cardProfileWarning.setVisibility(View.VISIBLE);
-            llHomeEmptyState.setVisibility(View.VISIBLE);
-            rvRecommendations.setVisibility(View.GONE);
-            return;
-        }
-
-        cardProfileWarning.setVisibility(View.GONE);
-        llHomeEmptyState.setVisibility(View.GONE);
-        rvRecommendations.setVisibility(View.VISIBLE);
-        pbHomeLoading.setVisibility(View.VISIBLE);
-
-        tvHomeGreeting.setText(getString(R.string.home_greeting_default));
-        tvHomeSubtitle.setText(getString(R.string.home_subtitle));
-
-        repository.getRecommendedSchemes(profile, recommendations -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
-                pbHomeLoading.setVisibility(View.GONE);
-                recommendedSchemes.clear();
-                if (recommendations != null) {
-                    for (Recommendation r : recommendations) {
-                        if (r.getScheme() != null) {
-                            recommendedSchemes.add(r.getScheme());
-                        }
-                    }
-                }
-                adapter.updateData(recommendedSchemes);
-
-                if (recommendedSchemes.isEmpty()) {
-                    llHomeEmptyState.setVisibility(View.VISIBLE);
-                    rvRecommendations.setVisibility(View.GONE);
-                } else {
-                    llHomeEmptyState.setVisibility(View.GONE);
-                    rvRecommendations.setVisibility(View.VISIBLE);
-                }
-            });
-        });
+        viewModel.loadRecommendations();
     }
 
     @Override

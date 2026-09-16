@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.yojnika.app.R;
 import com.yojnika.app.adapters.SchemeAdapter;
 import com.yojnika.app.models.Scheme;
@@ -30,11 +31,18 @@ public class CategorySchemesActivity extends AppCompatActivity implements Scheme
     private ProgressBar pbLoading;
     private TextView tvEmptyMessage;
 
+    private LinearLayout llCategoryPagination;
+    private MaterialButton btnCategoryPrevious, btnCategoryNext;
+    private TextView tvCategoryPageIndicator;
+
     private SchemeRepository repository;
     private SchemeAdapter adapter;
     private final List<Scheme> schemeList = new ArrayList<>();
     private String categoryName;
     private String databaseCategory;
+
+    private int currentPage = 1;
+    private static final int PAGE_SIZE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class CategorySchemesActivity extends AppCompatActivity implements Scheme
 
         initViews();
         setupRecyclerView();
+        setupPaginationListeners();
         loadSchemes();
 
         toolbar.setNavigationOnClickListener(v -> finish());
@@ -64,6 +73,11 @@ public class CategorySchemesActivity extends AppCompatActivity implements Scheme
         pbLoading = findViewById(R.id.pbCategoryLoading);
         tvEmptyMessage = findViewById(R.id.tvEmptyMessage);
 
+        llCategoryPagination = findViewById(R.id.llCategoryPagination);
+        btnCategoryPrevious = findViewById(R.id.btnCategoryPrevious);
+        btnCategoryNext = findViewById(R.id.btnCategoryNext);
+        tvCategoryPageIndicator = findViewById(R.id.tvCategoryPageIndicator);
+
         toolbar.setTitle(categoryName + " Schemes");
     }
 
@@ -73,12 +87,26 @@ public class CategorySchemesActivity extends AppCompatActivity implements Scheme
         rvSchemes.setAdapter(adapter);
     }
 
+    private void setupPaginationListeners() {
+        btnCategoryPrevious.setOnClickListener(v -> {
+            if (currentPage > 1) {
+                currentPage--;
+                loadSchemes();
+            }
+        });
+
+        btnCategoryNext.setOnClickListener(v -> {
+            currentPage++;
+            loadSchemes();
+        });
+    }
+
     private void loadSchemes() {
         pbLoading.setVisibility(View.VISIBLE);
         rvSchemes.setVisibility(View.GONE);
         llEmptyState.setVisibility(View.GONE);
 
-        repository.searchAndFilterSchemes(null, null, null, databaseCategory, schemes -> {
+        repository.searchAndFilterSchemesPaged(currentPage, PAGE_SIZE, null, null, null, databaseCategory, schemes -> {
             runOnUiThread(() -> {
                 pbLoading.setVisibility(View.GONE);
                 schemeList.clear();
@@ -86,9 +114,19 @@ public class CategorySchemesActivity extends AppCompatActivity implements Scheme
                     schemeList.addAll(schemes);
                     adapter.notifyDataSetChanged();
                     rvSchemes.setVisibility(View.VISIBLE);
+                    llCategoryPagination.setVisibility(View.VISIBLE);
+
+                    tvCategoryPageIndicator.setText("Page " + currentPage);
+                    btnCategoryPrevious.setEnabled(currentPage > 1);
+                    btnCategoryNext.setEnabled(schemes.size() >= PAGE_SIZE);
                 } else {
-                    llEmptyState.setVisibility(View.VISIBLE);
-                    tvEmptyMessage.setText("No schemes available for " + categoryName);
+                    if (currentPage > 1) {
+                        btnCategoryNext.setEnabled(false);
+                    } else {
+                        llEmptyState.setVisibility(View.VISIBLE);
+                        llCategoryPagination.setVisibility(View.GONE);
+                        tvEmptyMessage.setText("No schemes available for " + categoryName);
+                    }
                 }
             });
         });
