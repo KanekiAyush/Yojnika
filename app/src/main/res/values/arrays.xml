@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="districts_maharashtra">
+        <item>Mumbai</item>
+        <item>Pune</item>
+        <item>Nagpur</item>
+        <item>Nashik</item>
+        <item>Aurangabad</item>
+        <item>Thane</item>
+        <item>Solapur</item>
+        <item>Amravati</item>
+    </string-array>
+
+    <string-array name="districts_bihar">
+        <item>Patna</item>
+        <item>Gaya</item>
+        <item>Bhagalpur</item>
+        <item>Muzaffarpur</item>
+        <item>Purnia</item>
+        <item>Darbhanga</item>
+    </string-array>
+
+    <string-array name="districts_uttar_pradesh">
+        <item>Lucknow</item>
+        <item>Kanpur</item>
+        <item>Ghaziabad</item>
+        <item>Agra</item>
+        <item>Varanasi</item>
+        <item>Meerut</item>
+        <item>Prayagraj</item>
+    </string-array>
+
+    <string-array name="districts_gujarat">
+        <item>Ahmedabad</item>
+        <item>Surat</item>
+        <item>Vadodara</item>
+        <item>Rajkot</item>
+        <item>Bhavnagar</item>
+        <item>Jamnagar</item>
+    </string-array>
+
+    <string-array name="districts_madhya_pradesh">
+        <item>Indore</item>
+        <item>Bhopal</item>
+        <item>Jabalpur</item>
+        <item>Gwalior</item>
+        <item>Ujjain</item>
+        <item>Sagar</item>
+    </string-array>
+
+    <string-array name="districts_rajasthan">
+        <item>Jaipur</item>
+        <item>Jodhpur</item>
+        <item>Kota</item>
+        <item>Bikaner</item>
+        <item>Ajmer</item>
+        <item>Udaipur</item>
+    </string-array>
+
+    <string-array name="districts_empty">
+        <item>Select District</item>
+    </string-array>
+</resources>
