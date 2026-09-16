@@ -275,12 +275,9 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
             if (categoryFilter != null && !categoryFilter.equals("All") && !categoryFilter.equals("All Categories")) {
                 selection.append(" AND (")
                         .append(SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY).append(" LIKE ? OR ")
-                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE ? OR ")
                         .append(SchemeContract.SchemeEntry.COLUMN_TAGS).append(" LIKE ? OR ")
-                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS).append(" LIKE ? OR ")
-                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE '%All%')");
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS).append(" LIKE ?)");
                 String catPattern = "%" + categoryFilter + "%";
-                selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
@@ -355,12 +352,9 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
             if (categoryFilter != null && !categoryFilter.equals("All") && !categoryFilter.equals("All Categories")) {
                 selection.append(" AND (")
                         .append(SchemeContract.SchemeEntry.COLUMN_SCHEME_CATEGORY).append(" LIKE ? OR ")
-                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE ? OR ")
                         .append(SchemeContract.SchemeEntry.COLUMN_TAGS).append(" LIKE ? OR ")
-                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS).append(" LIKE ? OR ")
-                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_CATEGORY).append(" LIKE '%All%')");
+                        .append(SchemeContract.SchemeEntry.COLUMN_ELIGIBLE_OCCUPATIONS).append(" LIKE ?)");
                 String catPattern = "%" + categoryFilter + "%";
-                selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
                 selectionArgs.add(catPattern);
