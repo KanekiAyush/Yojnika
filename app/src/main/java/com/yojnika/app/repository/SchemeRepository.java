@@ -3,12 +3,13 @@ package com.yojnika.app.repository;
 import android.content.Context;
 
 import com.yojnika.app.database.SchemeDatabaseHelper;
-import com.yojnika.app.ml.ONNXInference;
 import com.yojnika.app.models.Recommendation;
 import com.yojnika.app.models.Scheme;
 import com.yojnika.app.models.UserProfile;
+import com.yojnika.app.services.SchemeMatcherService;
 import com.yojnika.app.utils.SharedPrefsManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,7 +19,7 @@ public class SchemeRepository {
 
     private final SchemeDatabaseHelper dbHelper;
     private final SharedPrefsManager prefsManager;
-    private final ONNXInference onnxInference;
+    private final SchemeMatcherService matcherService;
     private final ExecutorService executorService;
 
     public interface DataCallback<T> {
@@ -28,7 +29,7 @@ public class SchemeRepository {
     private SchemeRepository(Context context) {
         dbHelper = SchemeDatabaseHelper.getInstance(context);
         prefsManager = SharedPrefsManager.getInstance(context);
-        onnxInference = ONNXInference.getInstance(context);
+        matcherService = SchemeMatcherService.getInstance(context);
         executorService = Executors.newFixedThreadPool(2);
     }
 
@@ -60,6 +61,13 @@ public class SchemeRepository {
         });
     }
 
+    public void searchAndFilterSchemesPaged(int page, int pageSize, String query, String stateFilter, String typeFilter, String categoryFilter, DataCallback<List<Scheme>> callback) {
+        executorService.execute(() -> {
+            List<Scheme> list = dbHelper.searchAndFilterSchemesPaged(page, pageSize, query, stateFilter, typeFilter, categoryFilter);
+            callback.onDataLoaded(list);
+        });
+    }
+
     public void getBookmarkedSchemes(DataCallback<List<Scheme>> callback) {
         executorService.execute(() -> {
             List<Scheme> list = dbHelper.getBookmarkedSchemes();
@@ -77,8 +85,20 @@ public class SchemeRepository {
     public void getRecommendedSchemes(UserProfile profile, DataCallback<List<Recommendation>> callback) {
         executorService.execute(() -> {
             List<Scheme> allSchemes = dbHelper.getAllSchemes();
-            List<Recommendation> recommendations = onnxInference.predict(profile, allSchemes);
+            List<Scheme> matchedSchemes = matcherService.getRecommendations(profile, allSchemes);
+            List<Recommendation> recommendations = new ArrayList<>();
+            for (Scheme s : matchedSchemes) {
+                recommendations.add(new Recommendation(s.getSchemeId(), s.getMatchScore(), s));
+            }
             callback.onDataLoaded(recommendations);
+        });
+    }
+
+    public void getMatchedSchemes(UserProfile profile, DataCallback<List<Scheme>> callback) {
+        executorService.execute(() -> {
+            List<Scheme> allSchemes = dbHelper.getAllSchemes();
+            List<Scheme> matchedSchemes = matcherService.getRecommendations(profile, allSchemes);
+            callback.onDataLoaded(matchedSchemes);
         });
     }
 
@@ -95,6 +115,6 @@ public class SchemeRepository {
     }
 
     public boolean isMlModelLoaded() {
-        return onnxInference.isModelLoaded();
+        return matcherService.isModelLoaded();
     }
 }
