@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Maharashtra Districts -->
+    <string-array name="districts_maharashtra">
+        <item>Ahmednagar</item>
+        <item>Akola</item>
+        <item>Amravati</item>
+        <item>Beed</item>
+        <item>Bhandara</item>
+        <item>Buldhana</item>
+        <item>Chandrapur</item>
+        <item>Chhatrapati Sambhajinagar</item>
+        <item>Dharashiv</item>
+        <item>Dhule</item>
+        <item>Gadchiroli</item>
+        <item>Gondia</item>
+        <item>Hingoli</item>
+        <item>Jalgaon</item>
+        <item>Jalna</item>
+        <item>Kolhapur</item>
+        <item>Latur</item>
+        <item>Mumbai City</item>
+        <item>Mumbai Suburban</item>
+        <item>Nagpur</item>
+        <item>Nanded</item>
+        <item>Nandurbar</item>
+        <item>Nashik</item>
+        <item>Palghar</item>
+        <item>Parbhani</item>
+        <item>Pune</item>
+        <item>Raigad</item>
+        <item>Ratnagiri</item>
+        <item>Sangli</item>
+        <item>Satara</item>
+        <item>Sindhudurg</item>
+        <item>Solapur</item>
+        <item>Thane</item>
+        <item>Wardha</item>
+        <item>Washim</item>
+        <item>Yavatmal</item>
+    </string-array>
+
+    <!-- Bihar Districts -->
+    <string-array name="districts_bihar">
+        <item>Araria</item>
+        <item>Arwal</item>
+        <item>Aurangabad</item>
+        <item>Banka</item>
+        <item>Begusarai</item>
+        <item>Bhagalpur</item>
+        <item>Bhojpur</item>
+        <item>Buxar</item>
+        <item>Darbhanga</item>
+        <item>East Champaran</item>
+        <item>Gaya</item>
+        <item>Gopalganj</item>
+        <item>Jamui</item>
+        <item>Jehanabad</item>
+        <item>Kaimur</item>
+        <item>Katihar</item>
+        <item>Khagaria</item>
+        <item>Kishanganj</item>
+        <item>Lakhisarai</item>
+        <item>Madhepura</item>
+        <item>Madhubani</item>
+        <item>Munger</item>
+        <item>Muzaffarpur</item>
+        <item>Nalanda</item>
+        <item>Nawada</item>
+        <item>Patna</item>
+        <item>Purnia</item>
+        <item>Rohtas</item>
+        <item>Saharsa</item>
+        <item>Samastipur</item>
+        <item>Saran</item>
+        <item>Sheikhpura</item>
+        <item>Sheohar</item>
+        <item>Sitamarhi</item>
+        <item>Siwan</item>
+        <item>Supaul</item>
+        <item>Vaishali</item>
+        <item>West Champaran</item>
+    </string-array>
+
+    <!-- Uttar Pradesh -->
+    <string-array name="districts_uttar_pradesh">
+        <item>Agra</item><item>Aligarh</item><item>Prayagraj</item><item>Ambedkar Nagar</item><item>Ayodhya</item><item>Bareilly</item><item>Ghaziabad</item><item>Gorakhpur</item><item>Jhansi</item><item>Kanpur Nagar</item><item>Lucknow</item><item>Mathura</item><item>Meerut</item><item>Mirzapur</item><item>Moradabad</item><item>Noida</item><item>Varanasi</item>
+    </string-array>
+
+    <!-- Gujarat -->
+    <string-array name="districts_gujarat">
+        <item>Ahmedabad</item><item>Amreli</item><item>Anand</item><item>Bhavnagar</item><item>Gandhinagar</item><item>Jamnagar</item><item>Junagadh</item><item>Kutch</item><item>Mehsana</item><item>Morbi</item><item>Rajkot</item><item>Surat</item><item>Vadodara</item><item>Valsad</item>
+    </string-array>
+
+    <!-- Madhya Pradesh -->
+    <string-array name="districts_madhya_pradesh">
+        <item>Bhopal</item><item>Gwalior</item><item>Indore</item><item>Jabalpur</item><item>Jhabua</item><item>Rewa</item><item>Sagar</item><item>Satna</item><item>Ujjain</item>
+    </string-array>
+
+    <!-- Rajasthan -->
+    <string-array name="districts_rajasthan">
+        <item>Ajmer</item><item>Alwar</item><item>Bikaner</item><item>Jaipur</item><item>Jaisalmer</item><item>Jodhpur</item><item>Kota</item><item>Pali</item><item>Sikar</item><item>Udaipur</item>
+    </string-array>
+
+    <string-array name="districts_empty">
+        <item>Other</item>
+    </string-array>
+</resources>

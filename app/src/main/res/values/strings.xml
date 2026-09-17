@@ -305,7 +305,6 @@
         <item>Puducherry</item>
         <item>Andaman and Nicobar Islands</item>
         <item>Dadra and Nagar Haveli and Daman and Diu</item>
-        <item>Lakshadweep</item>
-        <item>Other</item>
+        <item>Lakshadweep</item><item>Other</item>
     </string-array>
 </resources>

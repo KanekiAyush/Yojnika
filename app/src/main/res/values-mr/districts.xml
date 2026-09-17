@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- महाराष्ट्रातील जिल्हे -->
+    <string-array name="districts_maharashtra">
+        <item>अहमदनगर</item>
+        <item>अकोला</item>
+        <item>अमरावती</item>
+        <item>बीड</item>
+        <item>भंडारा</item>
+        <item>बुलढाणा</item>
+        <item>चंद्रपूर</item>
+        <item>छत्रपती संभाजीनगर</item>
+        <item>धाराशिव</item>
+        <item>धुळे</item>
+        <item>गडचिरोली</item>
+        <item>गोंदिया</item>
+        <item>हिंगोली</item>
+        <item>जळगाव</item>
+        <item>जालना</item>
+        <item>कोल्हापूर</item>
+        <item>लातूर</item>
+        <item>मुंबई शहर</item>
+        <item>मुंबई उपनगर</item>
+        <item>नागपूर</item>
+        <item>नांदेड</item>
+        <item>नंदुरबार</item>
+        <item>नाशिक</item>
+        <item>पालघर</item>
+        <item>परभणी</item>
+        <item>पुणे</item>
+        <item>रायगड</item>
+        <item>रत्नागिरी</item>
+        <item>सांगली</item>
+        <item>सातारा</item>
+        <item>सिंधुदुर्ग</item>
+        <item>सोलापूर</item>
+        <item>ठाणे</item>
+        <item>वर्धा</item>
+        <item>वाशिम</item>
+        <item>यवतमाळ</item>
+    </string-array>
+
+    <!-- बिहारमधील जिल्हे -->
+    <string-array name="districts_bihar">
+        <item>अररिया</item>
+        <item>अरवल</item>
+        <item>औरंगाबाद</item>
+        <item>बांका</item>
+        <item>बेगूसराय</item>
+        <item>भागलपूर</item>
+        <item>भोजपूर</item>
+        <item>बक्सर</item>
+        <item>दरभंगा</item>
+        <item>पूर्व चंपारण</item>
+        <item>गया</item>
+        <item>गोपालगंज</item>
+        <item>जमुई</item>
+        <item>जहानाबाद</item>
+        <item>कैमूर</item>
+        <item>कटिहार</item>
+        <item>खगडिया</item>
+        <item>किशनगंज</item>
+        <item>लखीसराय</item>
+        <item>मधेपुरा</item>
+        <item>मधुबनी</item>
+        <item>मुंगेर</item>
+        <item>मुझफ्फरपूर</item>
+        <item>नालंदा</item>
+        <item>नवादा</item>
+        <item>पटना</item>
+        <item>पूर्णिया</item>
+        <item>रोहतास</item>
+        <item>सहरसा</item>
+        <item>समस्तीपूर</item>
+        <item>सारण</item>
+        <item>शेखपुरा</item>
+        <item>शिवहर</item>
+        <item>सीतामढी</item>
+        <item>सिवान</item>
+        <item>सुपौल</item>
+        <item>वैशाली</item>
+        <item>पश्चिम चंपारण</item>
+    </string-array>
+
+    <!-- उत्तर प्रदेश -->
+    <string-array name="districts_uttar_pradesh">
+        <item>आग्रा</item><item>अलिगड</item><item>प्रयागराज</item><item>आंबेडकर नगर</item><item>अयोध्या</item><item>बरेली</item><item>गाझियाबाद</item><item>गोरखपूर</item><item>झाशी</item><item>कानपूर नगर</item><item>लखनऊ</item><item>मथुरा</item><item>मेरठ</item><item>मिर्झापूर</item><item>मुरादाबाद</item><item>नोएडा</item><item>वाराणसी</item>
+    </string-array>
+
+    <!-- गुजरात -->
+    <string-array name="districts_gujarat">
+        <item>अहमदाबाद</item><item>अमरेली</item><item>आनंद</item><item>भावनगर</item><item>गांधीनगर</item><item>जामनगर</item><item>जुनागड</item><item>कच्छ</item><item>मेहसाणा</item><item>मोरबी</item><item>राजकोट</item><item>सुरत</item><item>वडोदरा</item><item>वलसाड</item>
+    </string-array>
+
+    <!-- मध्य प्रदेश -->
+    <string-array name="districts_madhya_pradesh">
+        <item>भोपाळ</item><item>ग्वाल्हेर</item><item>इंदूर</item><item>जबलपूर</item><item>झाबुआ</item><item>रिवा</item><item>सागर</item><item>सतना</item><item>उज्जैन</item>
+    </string-array>
+
+    <!-- राजस्थान -->
+    <string-array name="districts_rajasthan">
+        <item>अजमेर</item><item>अलवर</item><item>बिकानेर</item><item>जयपूर</item><item>जैसलमेर</item><item>जोधपूर</item><item>कोटा</item><item>पाली</item><item>सीकर</item><item>उदयपूर</item>
+    </string-array>
+
+    <string-array name="districts_empty">
+        <item>इतर</item>
+    </string-array>
+</resources>

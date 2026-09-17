@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">योजनिका</string>
+    <string name="app_tagline">सरकारी योजना सिफारिश सहायक</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">सिफारिशें</string>
+    <string name="nav_browse">ब्राउज़ करें</string>
+    <string name="nav_saved">सहेजे गए</string>
+    <string name="nav_profile">प्रोफ़ाइल</string>
+
+    <!-- Profile -->
+    <string name="profile_title">व्यक्तिगत प्रोफ़ाइल</string>
+    <string name="profile_subtitle">सटीक सिफारिशों के लिए अपनी जानकारी भरें</string>
+    <string name="full_name">पूरा नाम</string>
+    <string name="full_name_hint">जैसे: रमेश कुमार</string>
+    <string name="age">आयु</string>
+    <string name="age_hint">जैसे: 28</string>
+    <string name="gender">लिंग</string>
+    <string name="annual_income">वार्षिक आय (₹)</string>
+    <string name="annual_income_hint">जैसे: 180000</string>
+    <string name="occupation">व्यवसाय</string>
+    <string name="education_level">शिक्षा का स्तर</string>
+    <string name="category">श्रेणी / जाति</string>
+    <string name="state">राज्य / केंद्र शासित प्रदेश</string>
+    <string name="district">ज़िला</string>
+    <string name="district_hint">जैसे: पुणे, जयपुर, पटना</string>
+    <string name="marital_status">वैवाहिक स्थिति</string>
+    <string name="save_profile">प्रोफ़ाइल सहेजें</string>
+    <string name="edit_profile">प्रोफ़ाइल संपादित करें</string>
+    <string name="profile_saved_success">प्रोफ़ाइल सफलतापूर्वक सहेजी गई!</string>
+    <string name="profile_incomplete_warning">निजी सिफारिशों के लिए कृपया अपनी प्रोफ़ाइल पूरी करें।</string>
+
+    <!-- Home -->
+    <string name="home_greeting">नमस्ते, %1$s!</string>
+    <string name="home_subtitle">यहाँ आपके लिए शीर्ष सरकारी योजनाएं हैं</string>
+    <string name="match_score">मैच स्कोर</string>
+    <string name="high_match">उच्च मैच</string>
+    <string name="moderate_match">मध्यम मैच</string>
+    <string name="low_match">कम मैच</string>
+    <string name="view_details">विवरण देखें</string>
+    <string name="check_eligibility">पात्रता जांचें</string>
+    <string name="refresh_recommendations">ताज़ा करें</string>
+
+    <!-- Browse -->
+    <string name="browse_title">सभी सरकारी योजनाएं</string>
+    <string name="search_schemes_hint">योजना का नाम या कीवर्ड खोजें...</string>
+    <string name="filter_state">राज्य: सभी</string>
+    <string name="filter_type">प्रकार: सभी</string>
+    <string name="filter_category">श्रेणी: सभी</string>
+    <string name="filter_all">सभी</string>
+    <string name="central_gov">केंद्र सरकार</string>
+    <string name="state_gov">राज्य सरकार</string>
+
+    <!-- Saved -->
+    <string name="saved_title">सहेजी गई योजनाएं</string>
+    <string name="no_saved_schemes">अभी तक कोई योजना सहेजी नहीं गई</string>
+    <string name="no_saved_desc">ऑफ़लाइन एक्सेस करने के लिए ब्राउज़ करते समय योजनाओं को बुकमार्क करें।</string>
+    <string name="scheme_saved">योजना बुकमार्क की गई!</string>
+    <string name="scheme_removed">योजना बुकमार्क से हटाई गई</string>
+
+    <!-- Login -->
+    <string name="login_title">योजनika में आपका स्वागत है</string>
+    <string name="login_subtitle">अपनी सिफारिशों के लिए साइन इन करें</string>
+    <string name="email">ईमेल पता</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="email_or_phone">ईमेल या फ़ोन नंबर</string>
+    <string name="password">पासवर्ड</string>
+    <string name="login_button">साइन इन करें</string>
+    <string name="logout_button">लॉगआउट</string>
+    <string name="error_invalid_credentials">अमान्य ईमेल या पासवर्ड</string>
+    <string name="error_email_empty">ईमेल खाली नहीं हो सकता</string>
+    <string name="error_password_empty">पासवर्ड खाली नहीं हो सकता</string>
+    <string name="logout_confirmation">क्या आप वाकई लॉगआउट करना चाहते हैं?</string>
+
+    <!-- Register -->
+    <string name="register_title">खाता बनाएं</string>
+    <string name="register_subtitle">बेहतरीन योजनाएं खोजने के लिए योजनिका से जुड़ें</string>
+    <string name="confirm_password">पासवर्ड की पुष्टि करें</string>
+    <string name="register_button">साइन अप करें</string>
+    <string name="already_have_account">पहले से ही एक खाता है? लॉगिन करें</string>
+    <string name="dont_have_account">खाता नहीं है? रजिस्टर करें</string>
+    <string name="registration_success">पंजीकरण सफल रहा। कृपया लॉगिन करें।</string>
+    <string name="error_passwords_dont_match">पासवर्ड मेल नहीं खाते</string>
+    <string name="error_mobile_invalid">कृपया एक मान्य मोबाइल नंबर दर्ज करें</string>
+
+    <!-- Scheme Details -->
+    <string name="scheme_details_title">योजना का विवरण</string>
+    <string name="about_scheme">योजना के बारे में</string>
+    <string name="eligibility_criteria">पात्रता मानदंड</string>
+    <string name="benefits">मुख्य लाभ और वित्तीय सहायता</string>
+    <string name="application_process">आवेदन कैसे करें</string>
+    <string name="official_website">आधिकारिक पोर्टल</string>
+    <string name="open_portal">आधिकारिक वेबसाइट पर जाएं</string>
+    <string name="share_scheme">योजना साझा करें</string>
+
+    <!-- Eligibility Checker -->
+    <string name="eligibility_checker_title">पात्रता विवरण</string>
+    <string name="overall_status">कुल स्थिति</string>
+    <string name="status_eligible">पात्र</string>
+    <string name="status_partially_eligible">आंशिक रूप से पात्र</string>
+    <string name="status_not_eligible">पात्र नहीं</string>
+    <string name="criteria_matched">मानदंड मेल खाए</string>
+    <string name="criteria_unmatched">मानदंड मेल नहीं खाए</string>
+    <string name="your_value">आपकी प्रोफ़ाइल: %1$s</string>
+    <string name="required_value">योजना की आवश्यकता: %1$s</string>
+
+    <!-- Errors and Dialogs -->
+    <string name="error_name_required">पूरा नाम अनिवार्य है</string>
+    <string name="error_age_invalid">कृपया 1 से 100 के बीच एक मान्य आयु दर्ज करें</string>
+    <string name="error_income_invalid">कृपया एक मान्य वार्षिक आय दर्ज करें</string>
+    <string name="error_district_required">ज़िला अनिवार्य है</string>
+    <string name="enter_custom_district">ज़िले का नाम दर्ज करें</string>
+    <string name="enter_custom_income">वार्षिक आय दर्ज करें (₹)</string>
+    <string name="enter_custom_category">श्रेणी / जाति दर्ज करें</string>
+    <string name="error_name_invalid">कृपया एक मान्य नाम दर्ज करें (केवल अक्षर)</string>
+    <string name="all_india">संपूर्ण भारत</string>
+
+    <!-- Language -->
+    <string name="choose_language">अपनी भाषा चुनें</string>
+    <string name="english">English</string>
+    <string name="hindi">हिंदी</string>
+    <string name="marathi">मराठी</string>
+    <string name="select_state_prompt">राज्य चुनें</string>
+    <string name="other">अन्य</string>
+    <string name="personal_info">व्यक्तिगत जानकारी</string>
+    <string name="socio_economic_details">सामाजिक-आर्थिक विवरण</string>
+    <string name="location">स्थान</string>
+    <string name="enter_state_name">राज्य का नाम दर्ज करें</string>
+    <string name="error_age_range">आयु 1 से 100 के बीच होनी चाहिए</string>
+    <string name="error_state_required">राज्य अनिवार्य है</string>
+    <string name="error_category_required">श्रेणी अनिवार्य है</string>
+
+    <!-- Home UI -->
+    <string name="onnx_status">ONNX ऑन-डिवाइस अनुमान • ऑफलाइन</string>
+    <string name="browse_by_category">श्रेणी के अनुसार ब्राउज़ करें</string>
+    <string name="top_recommended">शीर्ष अनुशंसित योजनाएं</string>
+    <string name="no_recommendations">अभी तक कोई सिफारिश नहीं</string>
+    <string name="complete_profile_desc">अपनी पृष्ठभूमि के अनुरूप व्यक्तिगत योजना सिफारिशें प्राप्त करने के लिए अपनी प्रोफ़ाइल पूरी करें।</string>
+    <string name="category_education">शिक्षा</string>
+    <string name="category_agriculture">कृषि</string>
+    <string name="category_health">स्वास्थ्य</string>
+    <string name="category_business">व्यवसाय</string>
+    <string name="category_welfare">कल्याण</string>
+    <string name="complete_profile_btn">प्रोफ़ाइल पूरी करें</string>
+    <string name="setup_btn">सेट अप करें</string>
+    <string name="home_greeting_default">नमस्ते, नागरिक!</string>
+
+    <!-- Browse Filters -->
+    <string name="filter_state_title">राज्य / केंद्र शासित प्रदेश के आधार पर फ़िल्टर करें</string>
+    <string name="filter_type_title">योजना के प्रकार के आधार पर फ़िल्टर करें</string>
+    <string name="filter_category_title">श्रेणी / जाति के आधार पर फ़िल्टर करें</string>
+    <string name="all">सभी</string>
+    <string name="state_label">राज्य: %1$s</string>
+    <string name="type_label">प्रकार: %1$s</string>
+    <string name="category_label">श्रेणी: %1$s</string>
+
+    <!-- Profile Summary -->
+    <string name="guest_citizen">अतिथि नागरिक</string>
+    <string name="profile_not_configured">प्रोफ़ाइल अभी तक कॉन्फ़िगर नहीं की गई है</string>
+    <string name="not_set">निर्धारित नहीं</string>
+    <string name="years_label">%1$s वर्ष</string>
+
+    <!-- Scheme Details -->
+    <string name="required_documents">आवश्यक दस्तावेज़:</string>
+    <string name="cat_agri">कृषि / किसान</string>
+    <string name="cat_edu">शिक्षा / युवा</string>
+    <string name="cat_ent">उद्यमिता</string>
+    <string name="cat_welfare">नागरिक कल्याण</string>
+    <string name="criteria_age_range">• आयु सीमा: %1$s - %2$s वर्ष</string>
+    <string name="criteria_min_age">• न्यूनतम आयु: %1$s वर्ष</string>
+    <string name="criteria_all_ages">• आयु सीमा: सभी आयु वर्ग</string>
+    <string name="criteria_gender">• पात्र लिंग: %1$s</string>
+    <string name="criteria_income">• आय सीमा: ₹ %1$s प्रति वर्ष तक</string>
+    <string name="criteria_no_income">• आय सीमा: कोई ऊपरी आय सीमा नहीं</string>
+    <string name="criteria_occ">• व्यवसाय: %1$s</string>
+    <string name="criteria_edu">• शिक्षा: %1$s</string>
+    <string name="criteria_states">• पात्र राज्य: %1$s</string>
+    <string name="eligibility_details">पात्रता विवरण:</string>
+    <string name="none">कोई नहीं</string>
+
+    <!-- Theme -->
+    <string name="theme_title">थीम चुनें</string>
+    <string name="theme_light">लाइट मोड</string>
+    <string name="theme_dark">डार्क मोड</string>
+    <string name="theme_system">सिस्टम डिफॉल्ट</string>
+    <string name="apply">लागू करें</string>
+
+    <!-- Arrays -->
+    <string-array name="gender_array">
+        <item>पुरुष</item>
+        <item>महिला</item>
+        <item>अन्य</item>
+    </string-array>
+
+    <string-array name="marital_status_array">
+        <item>अविवाहित</item>
+        <item>विवाहित</item>
+    </string-array>
+
+    <string-array name="occupation_array">
+        <item>छात्र - इंजीनियरिंग</item>
+        <item>छात्र - मेडिकल</item>
+        <item>छात्र - डिप्लोमा</item>
+        <item>छात्र - कला</item>
+        <item>छात्र - वाणिज्य</item>
+        <item>छात्र - विज्ञान</item>
+        <item>अन्य छात्र</item>
+        <item>कर्मचारी</item>
+        <item>स्व-नियोजित / व्यवसाय</item>
+        <item>किसान</item>
+        <item>गृहिणी</item>
+        <item>कुशल श्रमिक</item>
+        <item>बेरोजगार</item>
+        <item>अन्य</item>
+    </string-array>
+
+    <string-array name="education_array">
+        <item>10वीं से कम</item>
+        <item>10वीं पास</item>
+        <item>12वीं pass</item>
+        <item>स्नातक (Graduate)</item>
+        <item>स्नातकोत्तर (Post Graduate)</item>
+        <item>डिप्लोमा</item>
+        <item>पीएचडी (PhD)</item>
+    </string-array>
+
+    <string-array name="income_range_array">
+        <item>₹0 – ₹15,000</item>
+        <item>₹15,000 – ₹30,000</item>
+        <item>₹30,000 – ₹50,000</item>
+        <item>₹50,000 – ₹1 लाख</item>
+        <item>₹1 लाख – ₹2 लाख</item>
+        <item>₹2 लाख – ₹3 लाख</item>
+        <item>₹3 लाख – ₹5 लाख</item>
+        <item>₹5 लाख – ₹8 लाख</item>
+        <item>अन्य</item>
+    </string-array>
+    <string-array name="indian_states_array">
+        <item>राज्य चुनें</item>
+        <item>आंध्र प्रदेश</item>
+        <item>अरुणाचल प्रदेश</item>
+        <item>असम</item>
+        <item>बिहार</item>
+        <item>छत्तीसगढ़</item>
+        <item>गोवा</item>
+        <item>गुजरात</item>
+        <item>हरियाणा</item>
+        <item>हिमाचल प्रदेश</item>
+        <item>झारखंड</item>
+        <item>कर्नाटक</item>
+        <item>केरल</item>
+        <item>मध्य प्रदेश</item>
+        <item>महाराष्ट्र</item>
+        <item>मणिपुर</item>
+        <item>मेघालय</item>
+        <item>मिजोरम</item>
+        <item>नागालैंड</item>
+        <item>ओडिशा</item>
+        <item>पंजाब</item>
+        <item>राजस्थान</item>
+        <item>सिक्किम</item>
+        <item>तमिलनाडु</item>
+        <item>तेलंगाना</item>
+        <item>त्रिपुरा</item>
+        <item>उत्तर प्रदेश</item>
+        <item>उत्तराखंड</item>
+        <item>पश्चिम बंगाल</item>
+        <item>दिल्ली</item>
+        <item>जम्मू और कश्मीर</item>
+        <item>लद्दाख</item>
+        <item>चंडीगढ़</item>
+        <item>पुडुचेरी</item>
+        <item>अंडमान और निकोबार द्वीप समूह</item>
+        <item>दादरा और नगर हवेली और दमन और दीव</item>
+        <item>लक्षद्वीप</item>
+        <item>अन्य</item>
+    </string-array>
+</resources>
