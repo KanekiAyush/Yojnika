@@ -20,12 +20,10 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Top row: Tags and Match Score Badge / Bookmark -->
-        <LinearLayout
+        <!-- Top row: Tags and Bookmark -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tvItemSchemeType"
@@ -39,28 +37,32 @@
                 android:text="Central"
                 android:textColor="@color/primary"
                 android:textSize="11sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvItemCategory"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_tag"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingTop="2dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="2dp"
                 android:text="Farmer"
                 android:textColor="@color/text_secondary"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnItemBookmark"
+                app:layout_constraintStart_toEndOf="@+id/tvItemSchemeType"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <!-- Bookmark Button -->
             <ImageView
                 android:id="@+id/btnItemBookmark"
                 android:layout_width="32dp"
@@ -69,9 +71,12 @@
                 android:contentDescription="@string/nav_saved"
                 android:padding="6dp"
                 android:src="@drawable/ic_bookmark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/text_secondary" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Scheme Title -->
         <TextView
