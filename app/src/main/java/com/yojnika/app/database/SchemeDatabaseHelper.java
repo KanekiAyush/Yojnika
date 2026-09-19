@@ -108,8 +108,18 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
 
                 try (SQLiteDatabase checkDb = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE)) {
                     checkDb.execSQL("PRAGMA user_version = " + Constants.DATABASE_VERSION);
+                    try {
+                        checkDb.execSQL("ALTER TABLE " + SchemeContract.SchemeEntry.TABLE_NAME + " ADD COLUMN " + SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED + " INTEGER DEFAULT 0;");
+                    } catch (Exception ignored) {}
+                    try {
+                        checkDb.execSQL("CREATE TABLE IF NOT EXISTS " + SchemeContract.BookmarkEntry.TABLE_NAME + " ("
+                                + SchemeContract.BookmarkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                                + SchemeContract.BookmarkEntry.COLUMN_SCHEME_ID + " INTEGER UNIQUE,"
+                                + SchemeContract.BookmarkEntry.COLUMN_SAVED_TIMESTAMP + " INTEGER"
+                                + ");");
+                    } catch (Exception ignored) {}
                 } catch (Exception e) {
-                    Log.e(TAG, "Failed setting user_version PRAGMA", e);
+                    Log.e(TAG, "Failed setting user_version PRAGMA or schema check", e);
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Failed to copy prebuilt SQLite database from assets", e);
@@ -173,6 +183,25 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + SchemeContract.SchemeEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + SchemeContract.BookmarkEntry.TABLE_NAME);
         onCreate(db);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        ensureBookmarkSchema(db);
+    }
+
+    private void ensureBookmarkSchema(SQLiteDatabase db) {
+        try {
+            db.execSQL("ALTER TABLE " + SchemeContract.SchemeEntry.TABLE_NAME + " ADD COLUMN " + SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED + " INTEGER DEFAULT 0;");
+        } catch (Exception ignored) {}
+        try {
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + SchemeContract.BookmarkEntry.TABLE_NAME + " ("
+                    + SchemeContract.BookmarkEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + SchemeContract.BookmarkEntry.COLUMN_SCHEME_ID + " INTEGER UNIQUE,"
+                    + SchemeContract.BookmarkEntry.COLUMN_SAVED_TIMESTAMP + " INTEGER"
+                    + ");");
+        } catch (Exception ignored) {}
     }
 
     public List<Scheme> getAllSchemes() {
@@ -393,14 +422,29 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Scheme> getBookmarkedSchemes() {
+        Log.d("BOOKMARK", "=== getBookmarkedSchemes called");
         List<Scheme> schemes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+
+        try {
+            Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + SchemeContract.SchemeEntry.TABLE_NAME + " WHERE " + SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED + "=1", null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    Log.d("BOOKMARK", "Schemes with is_bookmarked=1: " + c.getInt(0));
+                }
+                c.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error checking count", e);
+        }
+
         Cursor cursor = null;
         try {
             cursor = db.query(
                     SchemeContract.SchemeEntry.TABLE_NAME,
                     SUMMARY_PROJECTION,
-                    SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED + " = 1",
+                    SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED + " = 1 OR " +
+                            SchemeContract.SchemeEntry.COLUMN_SCHEME_ID + " IN (SELECT " + SchemeContract.BookmarkEntry.COLUMN_SCHEME_ID + " FROM " + SchemeContract.BookmarkEntry.TABLE_NAME + ")",
                     null,
                     null,
                     null,
@@ -408,12 +452,19 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
             );
 
             if (cursor != null) {
+                int isBookmarkedIdx = cursor.getColumnIndex(SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED);
                 if (cursor.moveToFirst()) {
                     do {
-                        schemes.add(cursorToScheme(cursor));
+                        if (isBookmarkedIdx != -1) {
+                            Log.d("BOOKMARK", "Column value=" + cursor.getInt(isBookmarkedIdx));
+                        }
+                        Scheme s = cursorToScheme(cursor);
+                        s.setBookmarked(true);
+                        schemes.add(s);
                     } while (cursor.moveToNext());
                 }
             }
+            Log.d("BOOKMARK", "Saved list size=" + schemes.size());
         } catch (Exception e) {
             Log.e(TAG, "Error fetching bookmarked schemes", e);
         } finally {
@@ -428,7 +479,11 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         boolean newBookmarkState = false;
         try {
+            Log.d("BOOKMARK", "=== toggleBookmark called: id=" + schemeId);
             Scheme scheme = getSchemeById(schemeId);
+            Log.d("BOOKMARK", "Scheme found: " + (scheme != null));
+            Log.d("BOOKMARK", "Old state: " + (scheme != null ? scheme.isBookmarked() : "N/A"));
+
             if (scheme != null) {
                 newBookmarkState = !scheme.isBookmarked();
                 ContentValues values = new ContentValues();
@@ -451,6 +506,24 @@ public class SchemeDatabaseHelper extends SQLiteOpenHelper {
                             SchemeContract.BookmarkEntry.COLUMN_SCHEME_ID + " = ?",
                             new String[]{String.valueOf(schemeId)}
                     );
+                }
+
+                // AFTER UPDATE, verify it actually saved:
+                Cursor c = db.rawQuery("SELECT " + SchemeContract.SchemeEntry.COLUMN_IS_BOOKMARKED + " FROM " + SchemeContract.SchemeEntry.TABLE_NAME + " WHERE " + SchemeContract.SchemeEntry.COLUMN_SCHEME_ID + "=" + schemeId, null);
+                if (c != null) {
+                    if (c.moveToFirst()) {
+                        Log.d("BOOKMARK", "DB value after update: " + c.getInt(0));
+                    }
+                    c.close();
+                }
+
+                // Also verify bookmarks table:
+                Cursor c2 = db.rawQuery("SELECT COUNT(*) FROM " + SchemeContract.BookmarkEntry.TABLE_NAME, null);
+                if (c2 != null) {
+                    if (c2.moveToFirst()) {
+                        Log.d("BOOKMARK", "Bookmarks table count: " + c2.getInt(0));
+                    }
+                    c2.close();
                 }
             }
         } catch (Exception e) {

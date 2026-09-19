@@ -54,6 +54,7 @@ public class SavedFragment extends Fragment implements SavedSchemeAdapter.OnSave
     @Override
     public void onResume() {
         super.onResume();
+        android.util.Log.d("BOOKMARK", "=== SavedFragment onResume");
         loadSavedSchemes();
     }
 
@@ -71,6 +72,7 @@ public class SavedFragment extends Fragment implements SavedSchemeAdapter.OnSave
                 if (list != null) {
                     savedSchemes.addAll(list);
                 }
+                android.util.Log.d("BOOKMARK", "SavedFragment loaded list size=" + savedSchemes.size());
                 adapter.updateData(savedSchemes);
 
                 tvSavedCount.setText(savedSchemes.size() + " bookmarked schemes");

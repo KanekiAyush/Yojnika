@@ -34,6 +34,10 @@ public class SavedSchemeAdapter extends RecyclerView.Adapter<SavedSchemeAdapter.
     }
 
     public void updateData(List<Scheme> newSchemes) {
+        if (newSchemes == this.savedSchemes) {
+            notifyDataSetChanged();
+            return;
+        }
         this.savedSchemes.clear();
         if (newSchemes != null) {
             this.savedSchemes.addAll(newSchemes);
