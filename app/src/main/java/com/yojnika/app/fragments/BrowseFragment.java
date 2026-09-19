@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.yojnika.app.R;
@@ -43,7 +44,7 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     private TextView tvBrowseCount;
     private RecyclerView rvBrowseSchemes;
     private LinearLayout llBrowseEmptyState;
-    private LinearLayout llBrowsePagination;
+    private MaterialCardView llBrowsePagination;
     private MaterialButton btnBrowsePrevious, btnBrowseNext;
     private TextView tvBrowsePageIndicator;
     private ProgressBar pbBrowseLoading;
@@ -172,7 +173,8 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
                     llBrowseEmptyState.setVisibility(View.GONE);
                     llBrowsePagination.setVisibility(View.VISIBLE);
                     tvBrowseCount.setText("Showing page " + currentPage + " (" + schemes.size() + " schemes)");
-                    tvBrowsePageIndicator.setText("Page " + currentPage);
+                    // Using a placeholder for total pages for now, or just showing Page X
+                    tvBrowsePageIndicator.setText(getString(R.string.pagination_page_indicator, currentPage, (schemes.size() < PAGE_SIZE ? currentPage : currentPage + 1)));
                     btnBrowsePrevious.setEnabled(currentPage > 1);
                     btnBrowseNext.setEnabled(schemes.size() >= PAGE_SIZE);
                 } else {

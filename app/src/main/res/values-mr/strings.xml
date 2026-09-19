@@ -130,6 +130,9 @@
     <string name="error_age_range">वय १ ते १०० दरम्यान असावे</string>
     <string name="error_state_required">राज्य आवश्यक आहे</string>
     <string name="error_category_required">वर्ग आवश्यक आहे</string>
+    <string name="prev">मागील</string>
+    <string name="next">पुढील</string>
+    <string name="pagination_page_indicator">पान %1$d पैकी %2$d</string>
 
     <!-- Home UI -->
     <string name="onnx_status">ONNX ऑन-डिव्हाइस अनुमान • ऑफलाइन</string>

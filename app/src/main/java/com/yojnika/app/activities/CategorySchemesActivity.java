@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.yojnika.app.R;
 import com.yojnika.app.adapters.SchemeAdapter;
 import com.yojnika.app.models.Scheme;
@@ -31,7 +32,7 @@ public class CategorySchemesActivity extends AppCompatActivity implements Scheme
     private ProgressBar pbLoading;
     private TextView tvEmptyMessage;
 
-    private LinearLayout llCategoryPagination;
+    private MaterialCardView llCategoryPagination;
     private MaterialButton btnCategoryPrevious, btnCategoryNext;
     private TextView tvCategoryPageIndicator;
 
@@ -116,7 +117,7 @@ public class CategorySchemesActivity extends AppCompatActivity implements Scheme
                     rvSchemes.setVisibility(View.VISIBLE);
                     llCategoryPagination.setVisibility(View.VISIBLE);
 
-                    tvCategoryPageIndicator.setText("Page " + currentPage);
+                    tvCategoryPageIndicator.setText(getString(R.string.pagination_page_indicator, currentPage, (schemes.size() < PAGE_SIZE ? currentPage : currentPage + 1)));
                     btnCategoryPrevious.setEnabled(currentPage > 1);
                     btnCategoryNext.setEnabled(schemes.size() >= PAGE_SIZE);
                 } else {

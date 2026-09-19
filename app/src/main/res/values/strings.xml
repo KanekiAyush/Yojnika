@@ -130,6 +130,9 @@
     <string name="error_age_range">Age must be between 1 and 100</string>
     <string name="error_state_required">State is required</string>
     <string name="error_category_required">Category is required</string>
+    <string name="prev">Prev</string>
+    <string name="next">Next</string>
+    <string name="pagination_page_indicator">Page %1$d of %2$d</string>
 
     <!-- Home UI -->
     <string name="onnx_status">ONNX On-Device Inference • Offline</string>

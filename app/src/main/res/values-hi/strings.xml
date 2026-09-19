@@ -130,6 +130,9 @@
     <string name="error_age_range">आयु 1 से 100 के बीच होनी चाहिए</string>
     <string name="error_state_required">राज्य अनिवार्य है</string>
     <string name="error_category_required">श्रेणी अनिवार्य है</string>
+    <string name="prev">पिछला</string>
+    <string name="next">अगला</string>
+    <string name="pagination_page_indicator">पृष्ठ %1$d का %2$d</string>
 
     <!-- Home UI -->
     <string name="onnx_status">ONNX ऑन-डिवाइस अनुमान • ऑफलाइन</string>

@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     private LinearLayout llHomeEmptyState;
     private MaterialButton btnEmptyCreateProfile;
     private ProgressBar pbHomeLoading;
-    private LinearLayout llHomePagination;
+    private MaterialCardView llHomePagination;
     private MaterialButton btnHomePrevious, btnHomeNext;
     private TextView tvHomePageIndicator;
     private MaterialCardView cardCategoryEducation, cardCategoryAgriculture, cardCategoryHealth, cardCategoryBusiness, cardCategorySocial;
@@ -220,6 +220,9 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
 
     private void renderPage() {
         recommendedSchemes.clear();
+        int totalPages = (int) Math.ceil((double) allMatched.size() / PAGE_SIZE);
+        if (totalPages == 0) totalPages = 1;
+
         int start = (currentPage - 1) * PAGE_SIZE;
         int end = Math.min(start + PAGE_SIZE, allMatched.size());
 
@@ -235,7 +238,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
             llHomeEmptyState.setVisibility(View.GONE);
             llHomePagination.setVisibility(View.VISIBLE);
             tvHomeSubtitle.setText(getString(R.string.home_subtitle));
-            tvHomePageIndicator.setText("Page " + currentPage);
+            tvHomePageIndicator.setText(getString(R.string.pagination_page_indicator, currentPage, totalPages));
             btnHomePrevious.setEnabled(currentPage > 1);
             btnHomeNext.setEnabled(end < allMatched.size());
         } else {
