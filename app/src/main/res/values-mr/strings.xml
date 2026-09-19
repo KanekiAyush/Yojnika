@@ -4,7 +4,7 @@
     <string name="app_tagline">सरकारी योजना शिफारस सहायक</string>
 
     <!-- Navigation -->
-    <string name="nav_home">शिफारसी</string>
+    <string name="nav_home">मुख्यपृष्ठ</string>
     <string name="nav_browse">ब्राउझ करा</string>
     <string name="nav_saved">जतन केलेले</string>
     <string name="nav_profile">प्रोफाइल</string>

@@ -4,7 +4,7 @@
     <string name="app_tagline">Government Scheme Recommendation Assistant</string>
 
     <!-- Navigation -->
-    <string name="nav_home">Recommendations</string>
+    <string name="nav_home">Home</string>
     <string name="nav_browse">Browse</string>
     <string name="nav_saved">Saved</string>
     <string name="nav_profile">Profile</string>
