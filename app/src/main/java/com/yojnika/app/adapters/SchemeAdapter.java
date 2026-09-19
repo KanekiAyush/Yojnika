@@ -86,26 +86,6 @@ public class SchemeAdapter extends RecyclerView.Adapter<SchemeAdapter.SchemeView
             holder.tvBenefitsPreview.setVisibility(View.GONE);
         }
 
-        // Score Badge
-        if (showMatchScore && scheme.getMatchScore() > 0) {
-            holder.tvMatchScore.setVisibility(View.VISIBLE);
-            int percentage = Math.round(scheme.getMatchScore() * 100);
-            holder.tvMatchScore.setText(percentage + "% Match");
-
-            if (percentage >= 70) {
-                holder.tvMatchScore.setBackgroundResource(R.drawable.bg_score_high);
-                holder.tvMatchScore.setTextColor(ContextCompat.getColor(context, R.color.score_high));
-            } else if (percentage >= 40) {
-                holder.tvMatchScore.setBackgroundResource(R.drawable.bg_score_medium);
-                holder.tvMatchScore.setTextColor(ContextCompat.getColor(context, R.color.score_medium));
-            } else {
-                holder.tvMatchScore.setBackgroundResource(R.drawable.bg_score_low);
-                holder.tvMatchScore.setTextColor(ContextCompat.getColor(context, R.color.score_low));
-            }
-        } else {
-            holder.tvMatchScore.setVisibility(View.GONE);
-        }
-
         // Bookmark Icon State
         if (scheme.isBookmarked()) {
             holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_filled);
@@ -137,7 +117,6 @@ public class SchemeAdapter extends RecyclerView.Adapter<SchemeAdapter.SchemeView
     static class SchemeViewHolder extends RecyclerView.ViewHolder {
         TextView tvSchemeType;
         TextView tvCategory;
-        TextView tvMatchScore;
         TextView tvSchemeName;
         TextView tvDescription;
         TextView tvBenefitsPreview;
@@ -147,7 +126,6 @@ public class SchemeAdapter extends RecyclerView.Adapter<SchemeAdapter.SchemeView
             super(itemView);
             tvSchemeType = itemView.findViewById(R.id.tvItemSchemeType);
             tvCategory = itemView.findViewById(R.id.tvItemCategory);
-            tvMatchScore = itemView.findViewById(R.id.tvMatchScore);
             tvSchemeName = itemView.findViewById(R.id.tvItemSchemeName);
             tvDescription = itemView.findViewById(R.id.tvItemDescription);
             tvBenefitsPreview = itemView.findViewById(R.id.tvBenefitsPreview);

@@ -60,23 +60,6 @@
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <!-- Match Score Badge -->
-            <TextView
-                android:id="@+id/tvMatchScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_score_high"
-                android:paddingStart="8dp"
-                android:paddingTop="3dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="3dp"
-                android:text="95% Match"
-                android:textColor="@color/score_high"
-                android:textSize="11sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
-
             <!-- Bookmark Button -->
             <ImageView
                 android:id="@+id/btnItemBookmark"

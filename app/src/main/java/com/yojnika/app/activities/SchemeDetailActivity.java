@@ -45,6 +45,9 @@ public class SchemeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheme_detail);
 
+        // Ensure status bar color is solid primary
+        getWindow().setStatusBarColor(getColor(R.color.primary));
+
         repository = SchemeRepository.getInstance(this);
 
         initViews();
