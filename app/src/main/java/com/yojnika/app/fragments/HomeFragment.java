@@ -105,6 +105,15 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     }
 
     private void loadProfileImage() {
+        UserProfile profile = repository.getUserProfile();
+        String fullName = profile != null ? profile.getFullName() : null;
+        if (fullName != null && !fullName.trim().isEmpty()) {
+            String firstName = fullName.split(" ")[0];
+            tvHomeGreeting.setText(getString(R.string.home_greeting, firstName));
+        } else {
+            tvHomeGreeting.setText(getString(R.string.home_greeting_default));
+        }
+
         String path = SharedPrefsManager.getInstance(requireContext()).getProfileImagePath();
         if (path != null && new File(path).exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
@@ -116,7 +125,6 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
             btnQuickProfile.setPadding(10, 10, 10, 10);
             btnQuickProfile.setImageTintList(requireContext().getColorStateList(R.color.primary));
         }
-        tvHomeGreeting.setText(getString(R.string.home_greeting_default));
     }
 
     private void setupRecyclerView() {
