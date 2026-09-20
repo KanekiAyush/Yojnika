@@ -48,6 +48,12 @@ android {
     buildConfig = true
   }
 
+  packaging {
+    jniLibs {
+      pickFirsts.add("**/libc++_shared.so")
+    }
+  }
+
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -70,6 +76,7 @@ dependencies {
   implementation("com.microsoft.onnxruntime:onnxruntime-android:1.17.0")
   implementation("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
   implementation("androidx.lifecycle:lifecycle-livedata:2.7.0")
+  implementation("com.google.mlkit:translate:17.0.3")
 
   testImplementation("junit:junit:4.13.2")
   testImplementation("androidx.test:core:1.5.0")

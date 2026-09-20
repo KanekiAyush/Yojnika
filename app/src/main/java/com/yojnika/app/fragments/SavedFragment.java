@@ -2,6 +2,7 @@ package com.yojnika.app.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,13 +67,14 @@ public class SavedFragment extends Fragment implements SavedSchemeAdapter.OnSave
 
     private void loadSavedSchemes() {
         repository.getBookmarkedSchemes(list -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
+            if (!isAdded() || getContext() == null) return;
+            requireActivity().runOnUiThread(() -> {
+                if (!isAdded() || getView() == null) return;
                 savedSchemes.clear();
                 if (list != null) {
                     savedSchemes.addAll(list);
                 }
-                android.util.Log.d("BOOKMARK", "SavedFragment loaded list size=" + savedSchemes.size());
+                Log.d("BOOKMARK", "SavedFragment loaded list size=" + savedSchemes.size());
                 adapter.updateData(savedSchemes);
 
                 tvSavedCount.setText(savedSchemes.size() + " bookmarked schemes");
@@ -98,8 +100,9 @@ public class SavedFragment extends Fragment implements SavedSchemeAdapter.OnSave
     @Override
     public void onRemoveBookmark(Scheme scheme, int position) {
         repository.toggleBookmark(scheme.getSchemeId(), isBookmarked -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
+            if (!isAdded() || getContext() == null) return;
+            requireActivity().runOnUiThread(() -> {
+                if (!isAdded() || adapter == null) return;
                 savedSchemes.remove(position);
                 adapter.notifyItemRemoved(position);
                 tvSavedCount.setText(savedSchemes.size() + " bookmarked schemes");

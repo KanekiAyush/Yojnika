@@ -31,11 +31,47 @@ public final class SchemeContract {
         public static final String COLUMN_CREATED_DATE = "created_date";
         public static final String COLUMN_IS_ACTIVE = "is_active";
         public static final String COLUMN_IS_BOOKMARKED = "is_bookmarked";
+
+        // Hindi Translations
+        public static final String COLUMN_SCHEME_NAME_HI = "scheme_name_hi";
+        public static final String COLUMN_SCHEME_DESCRIPTION_HI = "scheme_description_hi";
+        public static final String COLUMN_BENEFITS_HI = "benefits_hi";
+        public static final String COLUMN_APPLICATION_PROCESS_HI = "application_process_hi";
+        public static final String COLUMN_DOCUMENTS_HI = "documents_hi";
+        public static final String COLUMN_ELIGIBILITY_TEXT_HI = "eligibility_text_hi";
+
+        // Marathi Translations
+        public static final String COLUMN_SCHEME_NAME_MR = "scheme_name_mr";
+        public static final String COLUMN_SCHEME_DESCRIPTION_MR = "scheme_description_mr";
+        public static final String COLUMN_BENEFITS_MR = "benefits_mr";
+        public static final String COLUMN_APPLICATION_PROCESS_MR = "application_process_mr";
+        public static final String COLUMN_DOCUMENTS_MR = "documents_mr";
+        public static final String COLUMN_ELIGIBILITY_TEXT_MR = "eligibility_text_mr";
     }
 
     public static class BookmarkEntry implements BaseColumns {
         public static final String TABLE_NAME = "bookmarks";
         public static final String COLUMN_SCHEME_ID = "scheme_id";
+        public static final String COLUMN_USER_ID = "user_id";
         public static final String COLUMN_SAVED_TIMESTAMP = "saved_timestamp";
+    }
+
+    public static class UserEntry implements BaseColumns {
+        public static final String TABLE_NAME = "users";
+        public static final String COLUMN_USER_ID = "user_id";
+        public static final String COLUMN_EMAIL = "email";
+        public static final String COLUMN_PHONE = "phone";
+        public static final String COLUMN_PASSWORD_HASH = "password_hash";
+        public static final String COLUMN_FULL_NAME = "full_name";
+        public static final String COLUMN_AGE = "age";
+        public static final String COLUMN_GENDER = "gender";
+        public static final String COLUMN_ANNUAL_INCOME = "annual_income";
+        public static final String COLUMN_OCCUPATION = "occupation";
+        public static final String COLUMN_EDUCATION = "education";
+        public static final String COLUMN_CATEGORY = "category";
+        public static final String COLUMN_STATE = "state";
+        public static final String COLUMN_DISTRICT = "district";
+        public static final String COLUMN_MARITAL_STATUS = "marital_status";
+        public static final String COLUMN_CREATED_AT = "created_at";
     }
 }

@@ -13,7 +13,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yojnika.app.R;
+import com.yojnika.app.database.SchemeDatabaseHelper;
 import com.yojnika.app.models.Scheme;
+import com.yojnika.app.utils.SharedPrefsManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +31,14 @@ public class SchemeAdapter extends RecyclerView.Adapter<SchemeAdapter.SchemeView
     private final List<Scheme> schemeList;
     private final boolean showMatchScore;
     private final OnSchemeClickListener listener;
+    private final int currentUserId;
 
     public SchemeAdapter(Context context, List<Scheme> schemeList, boolean showMatchScore, OnSchemeClickListener listener) {
         this.context = context;
         this.schemeList = schemeList != null ? schemeList : new ArrayList<>();
         this.showMatchScore = showMatchScore;
         this.listener = listener;
+        this.currentUserId = SharedPrefsManager.getInstance(context).getLoggedInUserId();
     }
 
     public void updateData(List<Scheme> newSchemes) {
@@ -87,7 +91,8 @@ public class SchemeAdapter extends RecyclerView.Adapter<SchemeAdapter.SchemeView
         }
 
         // Bookmark Icon State
-        if (scheme.isBookmarked()) {
+        boolean isSaved = SchemeDatabaseHelper.getInstance(context).isBookmarkedForUser(scheme.getSchemeId(), currentUserId);
+        if (isSaved) {
             holder.btnBookmark.setImageResource(R.drawable.ic_bookmark_filled);
             holder.btnBookmark.setColorFilter(ContextCompat.getColor(context, R.color.primary));
         } else {

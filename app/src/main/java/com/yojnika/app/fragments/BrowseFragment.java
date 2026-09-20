@@ -162,8 +162,9 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
         String category = selectedCategory.equals("All") ? null : selectedCategory;
 
         repository.searchAndFilterSchemesPaged(currentPage, PAGE_SIZE, query, state, type, category, schemes -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
+            if (!isAdded() || getContext() == null) return;
+            requireActivity().runOnUiThread(() -> {
+                if (!isAdded() || getView() == null) return;
                 if (pbBrowseLoading != null) pbBrowseLoading.setVisibility(View.GONE);
                 schemeList.clear();
                 if (schemes != null && !schemes.isEmpty()) {
@@ -229,8 +230,9 @@ public class BrowseFragment extends Fragment implements SchemeAdapter.OnSchemeCl
     @Override
     public void onBookmarkClick(Scheme scheme, int position) {
         repository.toggleBookmark(scheme.getSchemeId(), isBookmarked -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
+            if (!isAdded() || getContext() == null) return;
+            requireActivity().runOnUiThread(() -> {
+                if (!isAdded() || adapter == null) return;
                 scheme.setBookmarked(isBookmarked);
                 adapter.notifyItemChanged(position);
                 Toast.makeText(requireContext(), isBookmarked ? R.string.scheme_saved : R.string.scheme_removed, Toast.LENGTH_SHORT).show();

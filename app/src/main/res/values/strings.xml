@@ -59,6 +59,19 @@
     <string name="scheme_saved">Scheme bookmarked!</string>
     <string name="scheme_removed">Scheme removed from bookmarks</string>
 
+    <!-- Translation -->
+    <string name="btn_translate">Translate</string>
+    <string name="download_model_title">Download Offline Model</string>
+    <string name="download_model_message">Download %1$s translation model (30MB) for offline access?</string>
+    <string name="btn_download">Download</string>
+    <string name="translating">Translating…</string>
+    <string name="translation_failed">Translation failed. Using English.</string>
+    <string name="model_downloading">Downloading translation model…</string>
+    <string name="model_download_failed">Download failed. Please check your internet connection.</string>
+    <string name="download_lang_notice">Download language for offline translation</string>
+    <string name="original_en">Original (EN)</string>
+    <string name="translated_badge">Translated</string>
+
     <!-- Login -->
     <string name="login_title">Welcome to Yojnika</string>
     <string name="login_subtitle">Sign in to access personalized government schemes</string>

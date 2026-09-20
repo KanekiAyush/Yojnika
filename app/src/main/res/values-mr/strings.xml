@@ -59,6 +59,19 @@
     <string name="scheme_saved">योजना बुकमार्क केली!</string>
     <string name="scheme_removed">योजना बुकमार्क मधून काढली</string>
 
+    <!-- Translation -->
+    <string name="btn_translate">अनुवाद करा</string>
+    <string name="download_model_title">ऑफलाइन मॉडेल डाउनलोड करा</string>
+    <string name="download_model_message">ऑफलाइन प्रवेशासाठी %1$s अनुवाद मॉडेल (30MB) डाउनलोड करायचे?</string>
+    <string name="btn_download">डाउनलोड करा</string>
+    <string name="translating">अनुवाद होत आहे…</string>
+    <string name="translation_failed">अनुवाद अयशस्वी. इंग्रजी वापरत आहे.</string>
+    <string name="model_downloading">अनुवाद मॉडेल डाउनलोड होत आहे…</string>
+    <string name="model_download_failed">डाउनलोड अयशस्वी. कृपया तुमचे इंटरनेट कनेक्शन तपासा.</string>
+    <string name="download_lang_notice">ऑफलाइन अनुवादासाठी भाषा डाउनलोड करा</string>
+    <string name="original_en">मूळ (EN)</string>
+    <string name="translated_badge">अनुवादित</string>
+
     <!-- Login -->
     <string name="login_title">योजनिका मध्ये आपले स्वागत आहे</string>
     <string name="login_subtitle">शिफारसींसाठी साइन इन करा</string>

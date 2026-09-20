@@ -1,5 +1,6 @@
 package com.yojnika.app.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -10,6 +11,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.yojnika.app.R;
+import com.yojnika.app.repository.SchemeRepository;
+import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -18,6 +21,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText etName, etEmail, etPhone, etPassword, etConfirmPassword;
     private MaterialButton btnRegister;
     private TextView tvBackToLogin;
+    private SchemeRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnRegister = findViewById(R.id.btnRegister);
         tvBackToLogin = findViewById(R.id.tvBackToLogin);
+
+        repository = SchemeRepository.getInstance(this);
 
         btnRegister.setOnClickListener(v -> attemptRegister());
         tvBackToLogin.setOnClickListener(v -> finish());
@@ -94,9 +100,24 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            SharedPrefsManager.getInstance(this).registerUser(email, phone, password, name);
-            Toast.makeText(this, R.string.registration_success, Toast.LENGTH_LONG).show();
-            finish();
+            btnRegister.setEnabled(false);
+            repository.registerUser(name, email, phone, password, userId -> {
+                runOnUiThread(() -> {
+                    btnRegister.setEnabled(true);
+                    if (userId != -1) {
+                        SharedPrefsManager.getInstance(RegisterActivity.this).setLoggedIn(userId.intValue());
+                        Toast.makeText(RegisterActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
+                        
+                        Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                        intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Email or phone already registered", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         }
     }
 }

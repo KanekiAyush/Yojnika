@@ -29,6 +29,22 @@ public class Scheme implements Serializable {
     private boolean isBookmarked;
     private float matchScore;          // Used for recommendation sorting
 
+    // Hindi Translations
+    private String schemeNameHi;
+    private String schemeDescriptionHi;
+    private String benefitsHi;
+    private String applicationProcessHi;
+    private String documentsHi;
+    private String eligibilityTextHi;
+
+    // Marathi Translations
+    private String schemeNameMr;
+    private String schemeDescriptionMr;
+    private String benefitsMr;
+    private String applicationProcessMr;
+    private String documentsMr;
+    private String eligibilityTextMr;
+
     public Scheme() {
     }
 
@@ -258,4 +274,31 @@ public class Scheme implements Serializable {
     public void setEligibilityText(String eligibilityText) {
         this.eligibilityText = eligibilityText;
     }
+
+    // Translation Getters/Setters
+    public String getSchemeNameHi() { return schemeNameHi; }
+    public void setSchemeNameHi(String schemeNameHi) { this.schemeNameHi = schemeNameHi; }
+    public String getSchemeDescriptionHi() { return schemeDescriptionHi; }
+    public void setSchemeDescriptionHi(String schemeDescriptionHi) { this.schemeDescriptionHi = schemeDescriptionHi; }
+    public String getBenefitsHi() { return benefitsHi; }
+    public void setBenefitsHi(String benefitsHi) { this.benefitsHi = benefitsHi; }
+    public String getApplicationProcessHi() { return applicationProcessHi; }
+    public void setApplicationProcessHi(String applicationProcessHi) { this.applicationProcessHi = applicationProcessHi; }
+    public String getDocumentsHi() { return documentsHi; }
+    public void setDocumentsHi(String documentsHi) { this.documentsHi = documentsHi; }
+    public String getEligibilityTextHi() { return eligibilityTextHi; }
+    public void setEligibilityTextHi(String eligibilityTextHi) { this.eligibilityTextHi = eligibilityTextHi; }
+
+    public String getSchemeNameMr() { return schemeNameMr; }
+    public void setSchemeNameMr(String schemeNameMr) { this.schemeNameMr = schemeNameMr; }
+    public String getSchemeDescriptionMr() { return schemeDescriptionMr; }
+    public void setSchemeDescriptionMr(String schemeDescriptionMr) { this.schemeDescriptionMr = schemeDescriptionMr; }
+    public String getBenefitsMr() { return benefitsMr; }
+    public void setBenefitsMr(String benefitsMr) { this.benefitsMr = benefitsMr; }
+    public String getApplicationProcessMr() { return applicationProcessMr; }
+    public void setApplicationProcessMr(String applicationProcessMr) { this.applicationProcessMr = applicationProcessMr; }
+    public String getDocumentsMr() { return documentsMr; }
+    public void setDocumentsMr(String documentsMr) { this.documentsMr = documentsMr; }
+    public String getEligibilityTextMr() { return eligibilityTextMr; }
+    public void setEligibilityTextMr(String eligibilityTextMr) { this.eligibilityTextMr = eligibilityTextMr; }
 }

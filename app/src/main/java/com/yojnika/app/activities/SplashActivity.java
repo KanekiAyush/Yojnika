@@ -21,19 +21,35 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPrefsManager.getInstance(this).applyTheme();
+        SharedPrefsManager prefs = SharedPrefsManager.getInstance(this);
+        prefs.applyTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         // Pre-initialize repository and local SQLite database
-        SchemeRepository.getInstance(this).getAllSchemes(schemes -> {
+        SchemeRepository repository = SchemeRepository.getInstance(this);
+        repository.getAllSchemes(schemes -> {
             // DB seeded and warm
         });
 
+        if (prefs.hasUserProfile() && prefs.getLoggedInUserId() == -1) {
+            // One-time migration for legacy user from SharedPreferences to SQLite
+            UserProfile profile = prefs.getUserProfile();
+            String email = prefs.getRegisteredEmail();
+            String phone = prefs.getRegisteredPhone();
+            String pass = prefs.getRegisteredPassword();
+            
+            if (pass.isEmpty()) pass = "password123"; // Fallback for old demo users
+
+            repository.migrateLegacyData(profile, email, phone, pass, userId -> {
+                if (userId != -1) {
+                    prefs.setLoggedIn(userId);
+                }
+            });
+        }
+
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent intent;
-            SharedPrefsManager prefs = SharedPrefsManager.getInstance(this);
-            
             if (prefs.isLoggedIn()) {
                 if (!prefs.isProfileComplete()) {
                     // Logged in but profile incomplete

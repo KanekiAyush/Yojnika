@@ -156,7 +156,9 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.choose_language)
                 .setItems(languages, (dialog, which) -> {
-                    LocaleHelper.setLocale(requireContext(), languageCodes[which]);
+                    String selectedLang = languageCodes[which];
+                    LocaleHelper.setLocale(requireContext(), selectedLang);
+                    SharedPrefsManager.getInstance(requireContext()).setContentLanguage(selectedLang);
                     requireActivity().recreate();
                 })
                 .show();
@@ -192,8 +194,13 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
         Log.d(TAG, "Loading recommendations for profile: " + profile);
 
         repository.getMatchedSchemes(profile, matched -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
+            if (!isAdded() || getContext() == null) {
+                Log.d("LIFECYCLE", "HomeFragment detached during recommendation load");
+                return;
+            }
+            requireActivity().runOnUiThread(() -> {
+                if (!isAdded() || getView() == null) return;
+                
                 if (pbHomeLoading != null) pbHomeLoading.setVisibility(View.GONE);
 
                 allMatched.clear();
@@ -227,6 +234,7 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     }
 
     private void renderPage() {
+        if (!isAdded()) return;
         recommendedSchemes.clear();
         int totalPages = (int) Math.ceil((double) allMatched.size() / PAGE_SIZE);
         if (totalPages == 0) totalPages = 1;
@@ -267,8 +275,9 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
     @Override
     public void onBookmarkClick(Scheme scheme, int position) {
         repository.toggleBookmark(scheme.getSchemeId(), isBookmarked -> {
-            if (getActivity() == null) return;
-            getActivity().runOnUiThread(() -> {
+            if (!isAdded() || getContext() == null) return;
+            requireActivity().runOnUiThread(() -> {
+                if (!isAdded() || adapter == null) return;
                 scheme.setBookmarked(isBookmarked);
                 adapter.notifyItemChanged(position);
                 Toast.makeText(requireContext(), isBookmarked ? R.string.scheme_saved : R.string.scheme_removed, Toast.LENGTH_SHORT).show();

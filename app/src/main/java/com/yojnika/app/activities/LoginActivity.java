@@ -12,6 +12,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import android.widget.TextView;
 import com.yojnika.app.R;
 import com.yojnika.app.models.UserProfile;
+import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText etEmail, etPassword;
     private MaterialButton btnLogin;
     private TextView tvRegister;
+    private SchemeRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
+
+        repository = SchemeRepository.getInstance(this);
 
         btnLogin.setOnClickListener(v -> attemptLogin());
         tvRegister.setOnClickListener(v -> {
@@ -59,35 +63,29 @@ public class LoginActivity extends AppCompatActivity {
             tilPassword.setError(null);
         }
 
-        SharedPrefsManager prefs = SharedPrefsManager.getInstance(this);
-        String regEmail = prefs.getRegisteredEmail();
-        String regPhone = prefs.getRegisteredPhone();
-        String regPassword = prefs.getRegisteredPassword();
-
-        // Check against Registered Credentials (Email OR Phone) or Demo Credentials
-        boolean isRegisteredMatch = (!regEmail.isEmpty() && input.equals(regEmail) && password.equals(regPassword)) 
-                                || (!regPhone.isEmpty() && input.equals(regPhone) && password.equals(regPassword));
-        
-        boolean isDemoMatch = (input.equals("user@yojnika.com") && password.equals("password123"));
-
-        if (isRegisteredMatch || isDemoMatch) {
-            prefs.setLoggedIn(true);
-            
-            Intent intent;
-            if (!prefs.isProfileComplete()) {
-                // Profile not complete, go to Setup
-                intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);
-            } else {
-                // Profile complete, go to Home
-                intent = new Intent(LoginActivity.this, MainActivity.class);
-            }
-            
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(this, R.string.error_invalid_credentials, Toast.LENGTH_SHORT).show();
-        }
+        btnLogin.setEnabled(false);
+        repository.loginUser(input, password, userId -> {
+            runOnUiThread(() -> {
+                btnLogin.setEnabled(true);
+                if (userId != -1) {
+                    SharedPrefsManager prefs = SharedPrefsManager.getInstance(LoginActivity.this);
+                    prefs.setLoggedIn(userId);
+                    
+                    Intent intent;
+                    if (!prefs.isProfileComplete()) {
+                        intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                        intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);
+                    } else {
+                        intent = new Intent(LoginActivity.this, MainActivity.class);
+                    }
+                    
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, R.string.error_invalid_credentials, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 }

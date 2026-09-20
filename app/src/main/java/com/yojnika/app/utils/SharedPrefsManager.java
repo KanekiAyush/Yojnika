@@ -63,15 +63,25 @@ public class SharedPrefsManager {
     }
 
     public boolean isLoggedIn() {
-        return sharedPreferences.getBoolean(Constants.KEY_IS_LOGGED_IN, false);
+        return sharedPreferences.getInt(Constants.KEY_LOGGED_IN_USER_ID, -1) != -1;
     }
 
-    public void setLoggedIn(boolean isLoggedIn) {
-        sharedPreferences.edit().putBoolean(Constants.KEY_IS_LOGGED_IN, isLoggedIn).apply();
+    public void setLoggedIn(int userId) {
+        sharedPreferences.edit()
+                .putInt(Constants.KEY_LOGGED_IN_USER_ID, userId)
+                .putBoolean(Constants.KEY_IS_LOGGED_IN, true)
+                .apply();
+    }
+
+    public int getLoggedInUserId() {
+        return sharedPreferences.getInt(Constants.KEY_LOGGED_IN_USER_ID, -1);
     }
 
     public void clearSession() {
-        sharedPreferences.edit().putBoolean(Constants.KEY_IS_LOGGED_IN, false).apply();
+        sharedPreferences.edit()
+                .remove(Constants.KEY_LOGGED_IN_USER_ID)
+                .putBoolean(Constants.KEY_IS_LOGGED_IN, false)
+                .apply();
     }
 
     public void registerUser(String email, String phone, String password, String name) {
@@ -132,6 +142,14 @@ public class SharedPrefsManager {
 
     public void applyTheme() {
         AppCompatDelegate.setDefaultNightMode(getThemeMode());
+    }
+
+    public void setContentLanguage(String langCode) {
+        sharedPreferences.edit().putString(Constants.KEY_CONTENT_LANGUAGE, langCode).apply();
+    }
+
+    public String getContentLanguage() {
+        return sharedPreferences.getString(Constants.KEY_CONTENT_LANGUAGE, "en");
     }
 
     public void clearProfile() {

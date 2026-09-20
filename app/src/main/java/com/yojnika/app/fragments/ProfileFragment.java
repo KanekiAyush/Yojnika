@@ -1,14 +1,22 @@
 package com.yojnika.app.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +37,8 @@ import com.yojnika.app.activities.ProfileActivity;
 import com.yojnika.app.activities.ProfilePhotoViewerActivity;
 import com.yojnika.app.models.UserProfile;
 import com.yojnika.app.repository.SchemeRepository;
+import com.yojnika.app.services.TranslationManager;
+import com.yojnika.app.services.TranslationService;
 import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
@@ -52,10 +62,13 @@ public class ProfileFragment extends Fragment {
     private TextView tvCurrentTheme;
     private MaterialButton btnEditProfileHeader;
     private MaterialButton btnLogout;
+    private MaterialButton btnDownloadHi, btnDownloadMr;
+    private ProgressBar pbDownload;
     private View cvEditPhoto;
     private View cvThemeSelection;
 
     private SchemeRepository repository;
+    private TranslationService translationService;
     private ActivityResultLauncher<PickVisualMediaRequest> pickMedia;
 
     @Override
@@ -75,6 +88,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         repository = SchemeRepository.getInstance(requireContext());
+        translationService = TranslationService.getInstance();
 
         ivProfileAvatar = view.findViewById(R.id.ivProfileAvatar);
         tvProfileName = view.findViewById(R.id.tvProfileName);
@@ -89,10 +103,16 @@ public class ProfileFragment extends Fragment {
         tvCurrentTheme = view.findViewById(R.id.tvCurrentTheme);
         btnEditProfileHeader = view.findViewById(R.id.btnEditProfileHeader);
         btnLogout = view.findViewById(R.id.btnLogout);
+        btnDownloadHi = view.findViewById(R.id.btnDownloadHi);
+        btnDownloadMr = view.findViewById(R.id.btnDownloadMr);
+        pbDownload = view.findViewById(R.id.pbDownload);
         cvEditPhoto = view.findViewById(R.id.cvEditPhoto);
         cvThemeSelection = view.findViewById(R.id.cvThemeSelection);
 
+        Log.d("TRANSLATE", "ProfileFragment onCreateView: buttons assigned. Hi=" + (btnDownloadHi != null) + ", Mr=" + (btnDownloadMr != null));
+
         updateThemeSummary();
+        updateDownloadButtons();
 
         ivProfileAvatar.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ProfilePhotoViewerActivity.class);
@@ -114,7 +134,122 @@ public class ProfileFragment extends Fragment {
 
         btnLogout.setOnClickListener(v -> logout());
 
+        btnDownloadHi.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Hindi download initiated", Toast.LENGTH_SHORT).show();
+            downloadLanguage("hi");
+        });
+        btnDownloadMr.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Marathi download initiated", Toast.LENGTH_SHORT).show();
+            downloadLanguage("mr");
+        });
+
         return view;
+    }
+
+    private void updateDownloadButtons() {
+        translationService.isModelDownloaded("hi", isDownloaded -> {
+            Log.d("TRANSLATE", "Check Hindi model: isDownloaded=" + isDownloaded);
+            if (getActivity() == null) return;
+            getActivity().runOnUiThread(() -> {
+                if (isDownloaded) {
+                    btnDownloadHi.setEnabled(false);
+                    btnDownloadHi.setText("Downloaded ✓");
+                } else {
+                    btnDownloadHi.setEnabled(true);
+                    btnDownloadHi.setText("Download");
+                }
+            });
+        });
+        translationService.isModelDownloaded("mr", isDownloaded -> {
+            Log.d("TRANSLATE", "Check Marathi model: isDownloaded=" + isDownloaded);
+            if (getActivity() == null) return;
+            getActivity().runOnUiThread(() -> {
+                if (isDownloaded) {
+                    btnDownloadMr.setEnabled(false);
+                    btnDownloadMr.setText("Downloaded ✓");
+                } else {
+                    btnDownloadMr.setEnabled(true);
+                    btnDownloadMr.setText("Download");
+                }
+            });
+        });
+    }
+
+    private void downloadLanguage(String lang) {
+        String langName = "hi".equalsIgnoreCase(lang) ? "Hindi" : "Marathi";
+        
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Download " + langName + " Model")
+                .setMessage("This will download ~30MB. Continue on mobile data?")
+                .setPositiveButton("Download", (dialog, which) -> {
+                    startLanguageDownload(lang);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void startLanguageDownload(String lang) {
+        Log.d("TRANSLATE", "startLanguageDownload entry: " + lang);
+        if (!isNetworkAvailable()) {
+            Log.w("TRANSLATE", "No internet for download");
+            Toast.makeText(requireContext(), "Internet connection required for model download", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String langName = "hi".equalsIgnoreCase(lang) ? "Hindi" : "Marathi";
+        MaterialButton targetBtn = "hi".equalsIgnoreCase(lang) ? btnDownloadHi : btnDownloadMr;
+
+        Log.d("TRANSLATE", "Starting download flow for " + langName);
+        pbDownload.setVisibility(View.VISIBLE);
+        targetBtn.setEnabled(false);
+        targetBtn.setText("Downloading...");
+
+        translationService.downloadModel(lang, new TranslationManager.ModelDownloadCallback() {
+            @Override
+            public void onSuccess() {
+                if (getActivity() == null) return;
+                getActivity().runOnUiThread(() -> {
+                    Log.d("TRANSLATE", langName + " model downloaded successfully");
+                    pbDownload.setVisibility(View.GONE);
+                    targetBtn.setText("Downloaded ✓");
+                    targetBtn.setEnabled(false);
+                    Toast.makeText(requireContext(), langName + " offline translation ready!", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                if (getActivity() == null) return;
+                getActivity().runOnUiThread(() -> {
+                    Log.e("TRANSLATE", langName + " download failed: " + e.getMessage(), e);
+                    pbDownload.setVisibility(View.GONE);
+                    targetBtn.setEnabled(true);
+                    targetBtn.setText("Download");
+                    Toast.makeText(requireContext(), "Download failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
+    private boolean isNetworkAvailable() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (cm == null) return false;
+            
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Network capabilities = cm.getActiveNetwork();
+                if (capabilities == null) return false;
+                NetworkCapabilities activeNetwork = cm.getNetworkCapabilities(capabilities);
+                if (activeNetwork == null) return false;
+                return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
+            } else {
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            }
+        } catch (Exception e) {
+            Log.e("TRANSLATE", "Error checking network", e);
+            return true; // Fallback to true if check fails
+        }
     }
 
     private void showThemeSelectionDialog() {

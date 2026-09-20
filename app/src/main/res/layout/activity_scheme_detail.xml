@@ -22,6 +22,18 @@
             app:titleTextColor="@color/white">
 
             <ImageView
+                android:id="@+id/btnTranslate"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end|center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Translate"
+                android:padding="12dp"
+                android:src="@drawable/ic_translate"
+                android:visibility="gone"
+                app:tint="@color/white" />
+
+            <ImageView
                 android:id="@+id/btnBookmark"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -36,6 +48,31 @@
         </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <ProgressBar
+        android:id="@+id/pbTranslate"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_anchor="@id/toolbar"
+        app:layout_anchorGravity="bottom" />
+
+    <TextView
+        android:id="@+id/tvTranslationNotice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF9C4"
+        android:padding="8dp"
+        android:text="@string/download_lang_notice"
+        android:textAlignment="center"
+        android:textColor="#F57F17"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_anchor="@id/toolbar"
+        app:layout_anchorGravity="bottom" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

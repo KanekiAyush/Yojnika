@@ -59,6 +59,19 @@
     <string name="scheme_saved">योजना बुकमार्क की गई!</string>
     <string name="scheme_removed">योजना बुकमार्क से हटाई गई</string>
 
+    <!-- Translation -->
+    <string name="btn_translate">अनुवाद करें</string>
+    <string name="download_model_title">ऑफ़लाइन मॉडल डाउनलोड करें</string>
+    <string name="download_model_message">ऑफ़लाइन उपयोग के लिए %1$s अनुवाद मॉडल (30MB) डाउनलोड करें?</string>
+    <string name="btn_download">डाउनलोड करें</string>
+    <string name="translating">अनुवाद हो रहा है…</string>
+    <string name="translation_failed">अनुवाद विफल रहा। अंग्रेजी का उपयोग कर रहे हैं।</string>
+    <string name="model_downloading">अनुवाद मॉडल डाउनलोड हो रहा है…</string>
+    <string name="model_download_failed">डाउनलोड विफल रहा। कृपया अपना इंटरनेट कनेक्शन जांचें।</string>
+    <string name="download_lang_notice">ऑफ़लाइन अनुवाद के लिए भाषा डाउनलोड करें</string>
+    <string name="original_en">मूल (EN)</string>
+    <string name="translated_badge">अनुवादित</string>
+
     <!-- Login -->
     <string name="login_title">योजनika में आपका स्वागत है</string>
     <string name="login_subtitle">अपनी सिफारिशों के लिए साइन इन करें</string>

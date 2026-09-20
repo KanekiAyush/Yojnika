@@ -3,11 +3,12 @@ package com.yojnika.app.utils;
 public class Constants {
     // Database Constants
     public static final String DATABASE_NAME = "yojnika_schemes_v2.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
 
     // Shared Preferences Keys
     public static final String PREF_NAME = "yojnika_user_profile";
     public static final String KEY_USER_EXISTS = "user_exists";
+    public static final String KEY_LOGGED_IN_USER_ID = "logged_in_user_id";
     public static final String KEY_FULL_NAME = "full_name";
     public static final String KEY_AGE = "age";
     public static final String KEY_GENDER = "gender";
@@ -25,6 +26,7 @@ public class Constants {
     public static final String KEY_PROFILE_IMAGE_PATH = "profile_image_path";
     public static final String KEY_PROFILE_COMPLETED = "profile_completed";
     public static final String KEY_THEME_MODE = "theme_mode";
+    public static final String KEY_CONTENT_LANGUAGE = "content_language";
 
     // Intent Extras
     public static final String EXTRA_SCHEME_ID = "extra_scheme_id";
