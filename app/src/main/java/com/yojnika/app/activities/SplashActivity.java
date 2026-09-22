@@ -51,7 +51,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Intent intent;
             if (prefs.isLoggedIn()) {
-                if (!prefs.isProfileComplete()) {
+                UserProfile profile = repository.getUserProfile();
+                if (profile == null || !profile.isComplete()) {
                     // Logged in but profile incomplete
                     intent = new Intent(SplashActivity.this, ProfileActivity.class);
                     intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);

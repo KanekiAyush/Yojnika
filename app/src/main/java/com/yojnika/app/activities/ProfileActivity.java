@@ -63,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (isSetupMode) {
             toolbar.setNavigationIcon(null);
-            toolbar.setTitle("Setup Your Profile");
+            toolbar.setTitle("Complete Your Profile");
         } else {
             toolbar.setNavigationOnClickListener(v -> finish());
         }

@@ -71,8 +71,11 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPrefsManager prefs = SharedPrefsManager.getInstance(LoginActivity.this);
                     prefs.setLoggedIn(userId);
                     
+                    // Check actual profile completeness from repository
+                    UserProfile profile = repository.getUserProfile();
+                    
                     Intent intent;
-                    if (!prefs.isProfileComplete()) {
+                    if (profile == null || !profile.isComplete()) {
                         intent = new Intent(LoginActivity.this, ProfileActivity.class);
                         intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);
                     } else {

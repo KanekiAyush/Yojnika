@@ -105,11 +105,10 @@ public class RegisterActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     btnRegister.setEnabled(true);
                     if (userId != -1) {
-                        SharedPrefsManager.getInstance(RegisterActivity.this).setLoggedIn(userId.intValue());
                         Toast.makeText(RegisterActivity.this, R.string.registration_success, Toast.LENGTH_LONG).show();
                         
-                        Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
-                        intent.putExtra(Constants.EXTRA_IS_SETUP_MODE, true);
+                        // Redirect to Login instead of Profile directly
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
