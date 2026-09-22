@@ -119,6 +119,25 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
+        ivProfileAvatar.setOnLongClickListener(v -> {
+            int userId = repository.getLoggedInUserId();
+            String path = SharedPrefsManager.getInstance(requireContext()).getProfileImagePath(userId);
+            if (path != null) {
+                new MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Remove Photo")
+                        .setMessage("Are you sure you want to remove your profile photo?")
+                        .setPositiveButton("Remove", (dialog, which) -> {
+                            SharedPrefsManager.getInstance(requireContext()).removeProfileImagePath(userId);
+                            loadProfileImage(null);
+                            Toast.makeText(requireContext(), "Photo removed", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+                return true;
+            }
+            return false;
+        });
+
         cvEditPhoto.setOnClickListener(v -> {
             pickMedia.launch(new PickVisualMediaRequest.Builder()
                     .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
@@ -295,8 +314,9 @@ public class ProfileFragment extends Fragment {
 
     private void saveAndSetProfileImage(Uri uri) {
         try {
+            int userId = repository.getLoggedInUserId();
             InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
-            File file = new File(requireContext().getFilesDir(), "profile_image.jpg");
+            File file = new File(requireContext().getFilesDir(), "profile_" + userId + ".jpg");
             FileOutputStream outputStream = new FileOutputStream(file);
             
             byte[] buffer = new byte[1024];
@@ -309,7 +329,7 @@ public class ProfileFragment extends Fragment {
             outputStream.close();
             inputStream.close();
 
-            SharedPrefsManager.getInstance(requireContext()).saveProfileImagePath(file.getAbsolutePath());
+            SharedPrefsManager.getInstance(requireContext()).saveProfileImagePath(userId, file.getAbsolutePath());
             loadProfileImage(file.getAbsolutePath());
             
         } catch (IOException e) {
@@ -343,7 +363,8 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadProfileData();
-        loadProfileImage(SharedPrefsManager.getInstance(requireContext()).getProfileImagePath());
+        int userId = repository.getLoggedInUserId();
+        loadProfileImage(SharedPrefsManager.getInstance(requireContext()).getProfileImagePath(userId));
     }
 
     private void loadProfileData() {

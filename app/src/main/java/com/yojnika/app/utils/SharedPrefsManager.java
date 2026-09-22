@@ -124,12 +124,27 @@ public class SharedPrefsManager {
         return sharedPreferences.getString(Constants.KEY_REG_PASSWORD, "");
     }
 
-    public void saveProfileImagePath(String path) {
-        sharedPreferences.edit().putString(Constants.KEY_PROFILE_IMAGE_PATH, path).apply();
+    public void saveProfileImagePath(int userId, String path) {
+        sharedPreferences.edit().putString(Constants.KEY_PROFILE_IMAGE_PATH + "_" + userId, path).apply();
     }
 
-    public String getProfileImagePath() {
-        return sharedPreferences.getString(Constants.KEY_PROFILE_IMAGE_PATH, null);
+    public String getProfileImagePath(int userId) {
+        // Migration logic: if global key exists, move to user-specific key
+        if (sharedPreferences.contains(Constants.KEY_PROFILE_IMAGE_PATH)) {
+            String globalPath = sharedPreferences.getString(Constants.KEY_PROFILE_IMAGE_PATH, null);
+            if (globalPath != null) {
+                sharedPreferences.edit()
+                        .putString(Constants.KEY_PROFILE_IMAGE_PATH + "_" + userId, globalPath)
+                        .remove(Constants.KEY_PROFILE_IMAGE_PATH)
+                        .apply();
+                return globalPath;
+            }
+        }
+        return sharedPreferences.getString(Constants.KEY_PROFILE_IMAGE_PATH + "_" + userId, null);
+    }
+
+    public void removeProfileImagePath(int userId) {
+        sharedPreferences.edit().remove(Constants.KEY_PROFILE_IMAGE_PATH + "_" + userId).apply();
     }
 
     public void setThemeMode(int mode) {

@@ -32,7 +32,8 @@ public class ProfilePhotoViewerActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        String path = SharedPrefsManager.getInstance(this).getProfileImagePath();
+        int userId = SharedPrefsManager.getInstance(this).getLoggedInUserId();
+        String path = SharedPrefsManager.getInstance(this).getProfileImagePath(userId);
         if (path != null && new File(path).exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             ivFullPhoto.setImageBitmap(bitmap);

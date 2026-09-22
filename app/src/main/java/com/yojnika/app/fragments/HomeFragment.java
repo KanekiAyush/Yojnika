@@ -114,7 +114,8 @@ public class HomeFragment extends Fragment implements SchemeAdapter.OnSchemeClic
             tvHomeGreeting.setText(getString(R.string.home_greeting_default));
         }
 
-        String path = SharedPrefsManager.getInstance(requireContext()).getProfileImagePath();
+        int userId = repository.getLoggedInUserId();
+        String path = SharedPrefsManager.getInstance(requireContext()).getProfileImagePath(userId);
         if (path != null && new File(path).exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             btnQuickProfile.setImageBitmap(bitmap);
