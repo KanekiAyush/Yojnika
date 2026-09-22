@@ -132,7 +132,7 @@ public class EligibilityCheckActivity extends AppCompatActivity {
             cardResult.setCardBackgroundColor(ContextCompat.getColor(this, R.color.score_high_bg));
             cardResult.setStrokeColor(ContextCompat.getColor(this, R.color.score_high));
         } else if (report.getScore() >= 0.50f) {
-            ivResultIcon.setImageResource(R.drawable.ic_sparkles);
+            ivResultIcon.setImageResource(R.drawable.ic_exclamation);
             ivResultIcon.setColorFilter(ContextCompat.getColor(this, R.color.score_medium));
             tvOverallStatus.setText(getString(R.string.status_partially_eligible));
             tvOverallStatus.setTextColor(ContextCompat.getColor(this, R.color.score_medium));

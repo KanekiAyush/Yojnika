@@ -122,20 +122,31 @@ public class ProfileFragment extends Fragment {
         ivProfileAvatar.setOnLongClickListener(v -> {
             int userId = repository.getLoggedInUserId();
             String path = SharedPrefsManager.getInstance(requireContext()).getProfileImagePath(userId);
+            
+            String[] options;
             if (path != null) {
-                new MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Remove Photo")
-                        .setMessage("Are you sure you want to remove your profile photo?")
-                        .setPositiveButton("Remove", (dialog, which) -> {
+                options = new String[]{"Change Photo", "Remove Photo"};
+            } else {
+                options = new String[]{"Change Photo"};
+            }
+
+            new MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Profile Photo")
+                    .setItems(options, (dialog, which) -> {
+                        if (which == 0) {
+                            // Change Photo
+                            pickMedia.launch(new PickVisualMediaRequest.Builder()
+                                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                    .build());
+                        } else if (which == 1) {
+                            // Remove Photo
                             SharedPrefsManager.getInstance(requireContext()).removeProfileImagePath(userId);
                             loadProfileImage(null);
                             Toast.makeText(requireContext(), "Photo removed", Toast.LENGTH_SHORT).show();
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
-                return true;
-            }
-            return false;
+                        }
+                    })
+                    .show();
+            return true;
         });
 
         cvEditPhoto.setOnClickListener(v -> {
