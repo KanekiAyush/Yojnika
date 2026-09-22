@@ -1,5 +1,6 @@
 package com.yojnika.app.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -16,7 +17,10 @@ import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
+import com.yojnika.app.utils.LocaleHelper;
+
 public class LoginActivity extends AppCompatActivity {
+
 
     private TextInputLayout tilEmail, tilPassword;
     private TextInputEditText etEmail, etPassword;
@@ -25,9 +29,19 @@ public class LoginActivity extends AppCompatActivity {
     private SchemeRepository repository;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        findViewById(R.id.btnLanguage).setOnClickListener(v -> {
+            LocaleHelper.showLanguageDialog(this, this::recreate);
+        });
+
 
         tilEmail = findViewById(R.id.tilEmail);
         tilPassword = findViewById(R.id.tilPassword);

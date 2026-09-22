@@ -7,11 +7,33 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.yojnika.app.R;
+
 import java.util.Locale;
+
 
 public class LocaleHelper {
 
     private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
+
+    public static void showLanguageDialog(Context context, Runnable onLanguageChanged) {
+        String[] languages = {context.getString(R.string.english), context.getString(R.string.hindi), context.getString(R.string.marathi)};
+        String[] languageCodes = {"en", "hi", "mr"};
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.choose_language)
+                .setItems(languages, (dialog, which) -> {
+                    String selectedLang = languageCodes[which];
+                    setLocale(context, selectedLang);
+                    SharedPrefsManager.getInstance(context).setContentLanguage(selectedLang);
+                    if (onLanguageChanged != null) {
+                        onLanguageChanged.run();
+                    }
+                })
+                .show();
+    }
+
 
     public static Context onAttach(Context context) {
         String lang = getPersistedData(context, Locale.getDefault().getLanguage());

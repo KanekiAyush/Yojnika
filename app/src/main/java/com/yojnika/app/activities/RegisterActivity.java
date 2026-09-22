@@ -1,5 +1,6 @@
 package com.yojnika.app.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,7 +16,10 @@ import com.yojnika.app.repository.SchemeRepository;
 import com.yojnika.app.utils.Constants;
 import com.yojnika.app.utils.SharedPrefsManager;
 
+import com.yojnika.app.utils.LocaleHelper;
+
 public class RegisterActivity extends AppCompatActivity {
+
 
     private TextInputLayout tilName, tilEmail, tilPhone, tilPassword, tilConfirmPassword;
     private TextInputEditText etName, etEmail, etPhone, etPassword, etConfirmPassword;
@@ -24,9 +28,19 @@ public class RegisterActivity extends AppCompatActivity {
     private SchemeRepository repository;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        findViewById(R.id.btnLanguage).setOnClickListener(v -> {
+            LocaleHelper.showLanguageDialog(this, this::recreate);
+        });
+
 
         tilName = findViewById(R.id.tilRegName);
         tilEmail = findViewById(R.id.tilRegEmail);
